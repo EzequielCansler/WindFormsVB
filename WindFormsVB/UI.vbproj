@@ -122,5 +122,11 @@
   <ItemGroup>
     <Folder Include="Forms\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.vbproj">
+      <Project>{4b6ebf79-2ab2-413a-ae3f-99595288b24e}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
