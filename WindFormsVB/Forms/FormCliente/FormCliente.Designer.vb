@@ -48,14 +48,14 @@ Partial Class FormCliente
         '
         Me.ClienteDataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.ClienteDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.ClienteDataView.Location = New System.Drawing.Point(46, 95)
+        Me.ClienteDataView.Location = New System.Drawing.Point(182, 95)
         Me.ClienteDataView.Name = "ClienteDataView"
-        Me.ClienteDataView.Size = New System.Drawing.Size(532, 240)
+        Me.ClienteDataView.Size = New System.Drawing.Size(276, 239)
         Me.ClienteDataView.TabIndex = 4
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(46, 69)
+        Me.TextBox1.Location = New System.Drawing.Point(46, 95)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 5
@@ -65,7 +65,7 @@ Partial Class FormCliente
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(3, 9)
+        Me.Label1.Location = New System.Drawing.Point(139, 9)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(319, 37)
         Me.Label1.TabIndex = 6

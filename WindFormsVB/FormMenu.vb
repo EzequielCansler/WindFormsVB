@@ -10,7 +10,8 @@ Public Class FormMenu
         formCliente.Show()
     End Sub
     Private Sub Productosbtn_Click(sender As Object, e As EventArgs) Handles Productosbtn.Click
-
+        Dim formProducto As New FormProducto()
+        formProducto.Show()
     End Sub
     Private Sub Ventasbtn_Click(sender As Object, e As EventArgs) Handles Ventasbtn.Click
 

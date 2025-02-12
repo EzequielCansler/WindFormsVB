@@ -1,0 +1,38 @@
+[33mcommit 868f7d807e030dc94e3e6c45052fd79afd385654[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Ezequiel <ezequielcansler91@gmail.com>
+Date:   Wed Feb 12 13:33:02 2025 -0300
+
+    CRUD de Clientes creado
+
+[33mcommit 49cee4bd42ea3052752a87b39f4f2ad1e6e5d1d0[m
+Author: Ezequiel <ezequielcansler91@gmail.com>
+Date:   Tue Feb 11 20:09:27 2025 -0300
+
+    Creando los form y algunas cosas del UI
+
+[33mcommit 3b705e5a1baf2098b5002f8ece0b606d417d9ca6[m[33m ([m[1;31morigin/master[m[33m)[m
+Merge: b503586 a74c462
+Author: Ezequiel Cansler <122060634+EzequielCansler@users.noreply.github.com>
+Date:   Tue Feb 11 14:36:36 2025 -0300
+
+    Merge pull request #1 from EzequielCansler/develop
+    
+    Agregar cambios en Entidades y otros archivos
+
+[33mcommit a74c462904056b6d38d227d26676b54645ec388c[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m
+Author: Ezequiel <ezequielcansler91@gmail.com>
+Date:   Tue Feb 11 14:35:17 2025 -0300
+
+    Agregar cambios en Entidades y otros archivos
+
+[33mcommit b5035867991ac9fac9cb67cd1c72a3e4bb805c11[m
+Author: Ezequ <Ezequ@DESKTOP-NUREQN8>
+Date:   Tue Feb 11 01:39:53 2025 -0300
+
+    Add project files.
+
+[33mcommit e9f7cd6401e2b84adda034e38f8c0801129d29eb[m
+Author: Ezequ <Ezequ@DESKTOP-NUREQN8>
+Date:   Tue Feb 11 01:39:50 2025 -0300
+
+    Add .gitattributes and .gitignore.

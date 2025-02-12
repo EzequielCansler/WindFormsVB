@@ -99,6 +99,18 @@
     <Compile Include="Forms\FormCliente\FormNuevoCliente.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormProducto\FormEditarProducto.Designer.vb">
+      <DependentUpon>FormEditarProducto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormProducto\FormEditarProducto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormProducto\FormNuevoProducto.Designer.vb">
+      <DependentUpon>FormNuevoProducto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormProducto\FormNuevoProducto.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FormProducto\FormProducto.Designer.vb">
       <DependentUpon>FormProducto.vb</DependentUpon>
     </Compile>
@@ -136,6 +148,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCliente\FormNuevoCliente.resx">
       <DependentUpon>FormNuevoCliente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormProducto\FormEditarProducto.resx">
+      <DependentUpon>FormEditarProducto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormProducto\FormNuevoProducto.resx">
+      <DependentUpon>FormNuevoProducto.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormProducto\FormProducto.resx">
       <DependentUpon>FormProducto.vb</DependentUpon>

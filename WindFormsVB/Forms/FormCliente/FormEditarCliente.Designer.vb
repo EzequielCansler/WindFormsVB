@@ -114,7 +114,7 @@ Partial Class FormEditarCliente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(293, 399)
+        Me.ClientSize = New System.Drawing.Size(304, 397)
         Me.Controls.Add(Me.btnCancelar)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.txtTelefono)
