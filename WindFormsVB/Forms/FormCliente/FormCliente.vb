@@ -1,56 +1,69 @@
-﻿Imports Entidades
+﻿Imports BLL
 
 Public Class FormCliente
-    ' Lista de clientes
-    Private listaClientes As New List(Of Cliente)
 
-    ' BindingSource
-    Private clientesBindingSource As New BindingSource()
-
-    ' Evento Load para inicializar datos
-    Private Sub FormClientes_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Simulando algunos datos de clientes
-        listaClientes.Add(New Cliente(1, "Juan", "Pérez", "juan@example.com", "123456789"))
-        listaClientes.Add(New Cliente(2, "Ana", "Gómez", "ana@example.com", "987654321"))
-        listaClientes.Add(New Cliente(3, "Carlos", "Martínez", "carlos@example.com", "112233445"))
-
-        ' Establecer la lista de clientes como fuente de datos del BindingSource
-        clientesBindingSource.DataSource = listaClientes
-
-        ' Enlazar el BindingSource al DataGridView
-        DataGridView1.DataSource = clientesBindingSource
-
-        ' Opcional: Personalizar las columnas del DataGridView
-        DataGridView1.Columns("ClienteID").HeaderText = "ID Cliente"
-        DataGridView1.Columns("Nombre").HeaderText = "Nombre"
-        DataGridView1.Columns("Apellido").HeaderText = "Apellido"
-        DataGridView1.Columns("Email").HeaderText = "Correo Electrónico"
-        DataGridView1.Columns("Telefono").HeaderText = "Teléfono"
-
-        ' Si quieres ocultar alguna columna
-        DataGridView1.Columns("ClienteID").Visible = False
-
-        Dim btnModificar As New DataGridViewButtonColumn()
-        btnModificar.Name = "Modificar"
-        btnModificar.HeaderText = "Acciones"
-        btnModificar.Text = "Modificar"
-        btnModificar.UseColumnTextForButtonValue = True
-
-        Dim btnEliminar As New DataGridViewButtonColumn()
-        btnEliminar.Name = "Eliminar"
-        btnEliminar.HeaderText = "Acciones"
-        btnEliminar.Text = "Eliminar"
-        btnEliminar.UseColumnTextForButtonValue = True
-
-        DataGridView1.Columns.Add(btnModificar)
-        DataGridView1.Columns.Add(btnEliminar)
+    Private Sub FormCliente_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CargarClientes()
+        btnModificar.Enabled = False
+        btnEliminar.Enabled = False
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
 
+    Private Sub CargarClientes()
+        ClienteDataView.DataSource = ClienteBLL.ObtenerClientes()
+        btnModificar.Enabled = False
+        btnEliminar.Enabled = False
     End Sub
 
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
 
+    Private Sub ClienteDataView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles ClienteDataView.CellClick
+        If e.RowIndex >= 0 Then
+            btnModificar.Enabled = True
+            btnEliminar.Enabled = True
+        End If
+    End Sub
+
+
+    Private Sub btnNuevo_Click(sender As Object, e As EventArgs) Handles btnNuevo.Click
+        Dim nuevoClienteForm As New FormNuevoCliente()
+        nuevoClienteForm.ShowDialog()
+        CargarClientes()
+    End Sub
+
+
+    Private Sub btnEliminar_Click(sender As Object, e As EventArgs) Handles btnEliminar.Click
+        If ClienteDataView.SelectedRows.Count > 0 Then
+            Try
+                Dim id As Integer = Convert.ToInt32(ClienteDataView.SelectedRows(0).Cells("ID").Value)
+                ClienteBLL.EliminarCliente(id)
+                CargarClientes()
+            Catch ex As Exception
+                MessageBox.Show("Error al eliminar el cliente: " & ex.Message)
+            End Try
+        Else
+            MessageBox.Show("Seleccione un cliente para eliminar.")
+        End If
+    End Sub
+
+    Private Sub btnModificar_Click(sender As Object, e As EventArgs) Handles btnModificar.Click
+        If ClienteDataView.SelectedRows.Count > 0 Then
+            Try
+                Dim id As Integer = Convert.ToInt32(ClienteDataView.SelectedRows(0).Cells("ID").Value)
+                Dim nombre As String = ClienteDataView.SelectedRows(0).Cells("Cliente").Value.ToString()
+                Dim correo As String = ClienteDataView.SelectedRows(0).Cells("Correo").Value.ToString()
+                Dim telefono As String = ClienteDataView.SelectedRows(0).Cells("Telefono").Value.ToString()
+
+                Dim editarForm As New FormEditarCliente(id, nombre, correo, telefono)
+                editarForm.ShowDialog()
+                CargarClientes()
+            Catch ex As Exception
+                MessageBox.Show("Error al modificar el cliente: " & ex.Message)
+            End Try
+        Else
+            MessageBox.Show("Seleccione un cliente para modificar.")
+        End If
+    End Sub
+    Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
+        Me.Close()
     End Sub
 End Class

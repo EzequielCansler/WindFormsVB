@@ -1,18 +1,18 @@
 ﻿Public Class Cliente
-    Public Property ClienteID As Integer
-    Public Property Nombre As String
-    Public Property Apellido As String
-    Public Property Email As String
+    Public Property ID As Integer
+    Public Property Cliente As String
+    Public Property Correo As String
     Public Property Telefono As String
 
     Public Sub New()
     End Sub
 
 
-    Public Sub New(nombre As String, apellido As String, email As String, telefono As String)
-        Me.Nombre = nombre
-        Me.Apellido = apellido
-        Me.Email = email
+    Public Sub New(clienteID As Integer, cliente As String, correo As String, telefono As String)
+
+        Me.ID = clienteID
+        Me.Cliente = cliente
+        Me.Correo = correo
         Me.Telefono = telefono
     End Sub
 End Class

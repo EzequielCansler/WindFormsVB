@@ -87,10 +87,28 @@
     <Compile Include="Forms\FormCliente\FormCliente.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormCliente\FormNuevo.Designer.vb">
-      <DependentUpon>FormNuevo.vb</DependentUpon>
+    <Compile Include="Forms\FormCliente\FormEditarCliente.Designer.vb">
+      <DependentUpon>FormEditarCliente.vb</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormCliente\FormNuevo.vb">
+    <Compile Include="Forms\FormCliente\FormEditarCliente.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCliente\FormNuevoCliente.Designer.vb">
+      <DependentUpon>FormNuevoCliente.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormCliente\FormNuevoCliente.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormProducto\FormProducto.Designer.vb">
+      <DependentUpon>FormProducto.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormProducto\FormProducto.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormVenta.Designer.vb">
+      <DependentUpon>FormVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormVenta.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -113,8 +131,14 @@
     <EmbeddedResource Include="Forms\FormCliente\FormCliente.resx">
       <DependentUpon>FormCliente.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormCliente\FormNuevo.resx">
-      <DependentUpon>FormNuevo.vb</DependentUpon>
+    <EmbeddedResource Include="Forms\FormCliente\FormEditarCliente.resx">
+      <DependentUpon>FormEditarCliente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCliente\FormNuevoCliente.resx">
+      <DependentUpon>FormNuevoCliente.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormProducto\FormProducto.resx">
+      <DependentUpon>FormProducto.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
