@@ -2,34 +2,84 @@
 Imports Entidades
 
 Public Class VentaDAL
-    Public Shared Function ObtenerVentas() As List(Of Venta)
+    Public Shared Function ObtenerVentas() As (List(Of Venta), List(Of String))
         Dim ventas As New List(Of Venta)
+        Dim nombreCliente As New List(Of String)
         Using conn As SqlConnection = ConexionBD.ObtenerConexion()
             conn.Open()
-            Dim query As String = "SELECT * FROM ventas"
+            Dim query As String = " SELECT V.ID, V.IDCliente, V.Fecha, V.Total, C.Cliente
+                                    FROM ventas AS V
+                                    JOIN Clientes AS C ON V.IDCliente = C.ID
+                                  "
             Dim cmd As New SqlCommand(query, conn)
             Dim reader As SqlDataReader = cmd.ExecuteReader()
             While reader.Read()
                 ventas.Add(New Venta(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2), reader.GetDouble(3)))
+                nombreCliente.Add(reader.GetString(4))
             End While
         End Using
-        Return ventas
+        Return (ventas, nombreCliente)
     End Function
+    Public Shared Function ObtenerVentaPorID(ID As Integer) As (Venta, String)
+        Dim venta As Venta = Nothing
+        Dim cliente As String = String.Empty
 
-    Public Shared Function ObtenerDetallesDeVenta(ventaID As Integer) As List(Of VentaItem)
-        Dim detalles As New List(Of VentaItem)
         Using conn As SqlConnection = ConexionBD.ObtenerConexion()
             conn.Open()
-            Dim query As String = "SELECT * FROM ventasitems WHERE IDVenta = @IDVenta"
+            Dim query As String = " SELECT V.ID, V.IDCliente, V.Fecha, V.Total, C.Cliente
+                                    FROM ventas AS V
+                                    JOIN Clientes AS C ON V.IDCliente = C.ID
+                                    WHERE V.ID = @ID        
+                                  "
+
+            Dim cmd As New SqlCommand(query, conn)
+            cmd.Parameters.AddWithValue("@ID", ID)
+            Dim reader As SqlDataReader = cmd.ExecuteReader()
+
+            If reader.Read() Then
+                venta = New Venta(reader.GetInt32(0), reader.GetInt32(1), reader.GetDateTime(2), reader.GetDouble(3))
+                cliente = reader.GetString(4)
+            End If
+
+        End Using
+
+        Return (venta, cliente)
+    End Function
+
+    Public Shared Function ObtenerDetallesDeVenta(ventaID As Integer) As (List(Of VentaItem), List(Of String))
+        Dim detalles As New List(Of VentaItem)
+        Dim nombresProductos As New List(Of String)
+
+        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+            conn.Open()
+
+            Dim query As String = "SELECT V.ID, V.IDVenta, V.IDProducto, P.Nombre, V.PrecioUnitario, V.Cantidad, V.PrecioTotal
+                               FROM ventasitems AS V
+                               JOIN Productos AS P ON V.IDProducto = P.ID
+                               WHERE V.IDVenta = @IDVenta"
+
             Dim cmd As New SqlCommand(query, conn)
             cmd.Parameters.AddWithValue("@IDVenta", ventaID)
             Dim reader As SqlDataReader = cmd.ExecuteReader()
+
             While reader.Read()
-                detalles.Add(New VentaItem(reader("ID"), reader("IDVenta"), reader("IDProducto"), reader("PrecioUnitario"), reader("Cantidad"), reader("PrecioTotal")))
+                detalles.Add(New VentaItem(
+                reader.GetInt32(0),
+                reader.GetInt32(1),
+                reader.GetInt32(2),
+                reader.GetDouble(4),
+                reader.GetDouble(5),
+                reader.GetDouble(6)
+            ))
+
+                nombresProductos.Add(reader.GetString(3))
             End While
         End Using
-        Return detalles
+
+        Return (detalles, nombresProductos)
     End Function
+
+
 
     Public Shared Sub CrearVenta(venta As Venta, detalles As List(Of VentaItem))
         Using conn As SqlConnection = ConexionBD.ObtenerConexion()

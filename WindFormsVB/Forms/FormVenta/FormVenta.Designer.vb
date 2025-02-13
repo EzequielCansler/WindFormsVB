@@ -29,7 +29,7 @@ Partial Class FormVenta
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.VentaDataView = New System.Windows.Forms.DataGridView()
         Me.btnCrearVenta = New System.Windows.Forms.Button()
-        Me.btnVerReporte = New System.Windows.Forms.Button()
+        Me.btnReporte = New System.Windows.Forms.Button()
         Me.VentaItemDataView = New System.Windows.Forms.DataGridView()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -39,7 +39,7 @@ Partial Class FormVenta
         '
         'btnEliminar
         '
-        Me.btnEliminar.Location = New System.Drawing.Point(281, 402)
+        Me.btnEliminar.Location = New System.Drawing.Point(269, 402)
         Me.btnEliminar.Name = "btnEliminar"
         Me.btnEliminar.Size = New System.Drawing.Size(87, 23)
         Me.btnEliminar.TabIndex = 16
@@ -48,7 +48,7 @@ Partial Class FormVenta
         '
         'btnModificar
         '
-        Me.btnModificar.Location = New System.Drawing.Point(161, 402)
+        Me.btnModificar.Location = New System.Drawing.Point(158, 402)
         Me.btnModificar.Name = "btnModificar"
         Me.btnModificar.Size = New System.Drawing.Size(92, 23)
         Me.btnModificar.TabIndex = 15
@@ -77,7 +77,7 @@ Partial Class FormVenta
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(101, 71)
+        Me.TextBox1.Location = New System.Drawing.Point(101, 68)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 12
@@ -101,14 +101,14 @@ Partial Class FormVenta
         Me.btnCrearVenta.Text = "Crear Venta"
         Me.btnCrearVenta.UseVisualStyleBackColor = True
         '
-        'btnVerReporte
+        'btnReporte
         '
-        Me.btnVerReporte.Location = New System.Drawing.Point(569, 402)
-        Me.btnVerReporte.Name = "btnVerReporte"
-        Me.btnVerReporte.Size = New System.Drawing.Size(87, 23)
-        Me.btnVerReporte.TabIndex = 17
-        Me.btnVerReporte.Text = "Ver Reporte"
-        Me.btnVerReporte.UseVisualStyleBackColor = True
+        Me.btnReporte.Location = New System.Drawing.Point(449, 402)
+        Me.btnReporte.Name = "btnReporte"
+        Me.btnReporte.Size = New System.Drawing.Size(115, 23)
+        Me.btnReporte.TabIndex = 17
+        Me.btnReporte.Text = "Generar Reporte"
+        Me.btnReporte.UseVisualStyleBackColor = True
         '
         'VentaItemDataView
         '
@@ -145,7 +145,7 @@ Partial Class FormVenta
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.VentaItemDataView)
-        Me.Controls.Add(Me.btnVerReporte)
+        Me.Controls.Add(Me.btnReporte)
         Me.Controls.Add(Me.btnEliminar)
         Me.Controls.Add(Me.btnModificar)
         Me.Controls.Add(Me.btnVolver)
@@ -169,7 +169,7 @@ Partial Class FormVenta
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents VentaDataView As DataGridView
     Friend WithEvents btnCrearVenta As Button
-    Friend WithEvents btnVerReporte As Button
+    Friend WithEvents btnReporte As Button
     Friend WithEvents VentaItemDataView As DataGridView
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label

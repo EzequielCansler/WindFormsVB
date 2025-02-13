@@ -3,13 +3,16 @@ Imports Entidades
 
 Public Class VentaBLL
 
-    Public Shared Function ObtenerVentas() As List(Of Venta)
+    Public Shared Function ObtenerVentas() As (List(Of Venta), List(Of String))
         Return VentaDAL.ObtenerVentas()
+    End Function
+    Public Shared Function ObtenerVentaPorID(ID As Integer) As (Venta, String)
+        Return VentaDAL.ObtenerVentaPorID(ID)
     End Function
 
 
-    Public Shared Function ObtenerDetallesDeVenta(ventaID As Integer) As List(Of VentaItem)
-        Return VentaDAL.ObtenerDetallesDeVenta(ventaID)
+    Public Shared Function ObtenerDetallesDeVenta(ID As Integer) As (List(Of VentaItem), List(Of String))
+        Return VentaDAL.ObtenerDetallesDeVenta(ID)
     End Function
 
 
