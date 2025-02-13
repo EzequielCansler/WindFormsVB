@@ -48,6 +48,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportViewer.WinForms.10.0.40219.1\lib\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -117,6 +120,18 @@
     <Compile Include="Forms\FormProducto\FormProducto.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormVenta\FormNuevaVenta.Designer.vb">
+      <DependentUpon>FormNuevaVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormNuevaVenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormReporte.Designer.vb">
+      <DependentUpon>FormReporte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormReporte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FormVenta\FormVenta.Designer.vb">
       <DependentUpon>FormVenta.vb</DependentUpon>
     </Compile>
@@ -158,6 +173,12 @@
     <EmbeddedResource Include="Forms\FormProducto\FormProducto.resx">
       <DependentUpon>FormProducto.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormVenta\FormNuevaVenta.resx">
+      <DependentUpon>FormNuevaVenta.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormVenta\FormVenta.resx">
+      <DependentUpon>FormVenta.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -179,6 +200,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

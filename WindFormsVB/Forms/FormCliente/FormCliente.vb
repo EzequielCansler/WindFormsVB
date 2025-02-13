@@ -41,7 +41,7 @@ Public Class FormCliente
                 MessageBox.Show("Error al eliminar el cliente: " & ex.Message)
             End Try
         Else
-            MessageBox.Show("Seleccione un cliente para eliminar.")
+            MessageBox.Show("Seleccione un cliente para eliminar, debe clickear en el cuadrado a la izquierda del Id (en la flecha).")
         End If
     End Sub
 
@@ -60,7 +60,7 @@ Public Class FormCliente
                 MessageBox.Show("Error al modificar el cliente: " & ex.Message)
             End Try
         Else
-            MessageBox.Show("Seleccione un cliente para modificar.")
+            MessageBox.Show("Seleccione un cliente para modificar, debe clickear en el cuadrado a la izquierda del Id (en la flecha).")
         End If
     End Sub
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click

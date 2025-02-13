@@ -1,16 +1,20 @@
 ﻿Public Class Venta
-    Public Property VentaID As Integer
-    Public Property ClienteID As Integer
+    Public Property ID As Integer
+    Public Property IDCliente As Integer
     Public Property Fecha As DateTime
-    Public Property MontoTotal As Decimal
-    Public Property ProductoID As Integer
+    Public Property Total As Decimal
 
-    Public Sub New(ventaID As Integer, clienteID As Integer, fecha As DateTime, montoTotal As Decimal, productoID As Integer)
-        Me.VentaID = ventaID
-        Me.ClienteID = clienteID
-        Me.Fecha = fecha
-        Me.MontoTotal = montoTotal
-        Me.ProductoID = productoID
+    Public Property Items As List(Of VentaItem)
+
+    Public Sub New()
+        Items = New List(Of VentaItem)()
     End Sub
 
+    Public Sub New(id As Integer, idCliente As Integer, fecha As DateTime, total As Decimal)
+        Me.ID = id
+        Me.IDCliente = idCliente
+        Me.Fecha = fecha
+        Me.Total = total
+
+    End Sub
 End Class

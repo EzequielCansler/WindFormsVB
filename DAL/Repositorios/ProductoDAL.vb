@@ -22,7 +22,20 @@ Public Class ProductoDAL
         End Try
         Return productos
     End Function
-
+    Public Shared Function ObtenerProductoPorID(ID As Integer) As Producto
+        Dim producto As Producto = Nothing
+        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+            conn.Open()
+            Dim query As String = "SELECT ID, Nombre, Precio, Categoria FROM productos WHERE ID = @ID"
+            Dim cmd As New SqlCommand(query, conn)
+            cmd.Parameters.AddWithValue("@ID", ID)
+            Dim reader As SqlDataReader = cmd.ExecuteReader()
+            If reader.Read() Then
+                producto = New Producto(reader.GetInt32(0), reader.GetString(1), reader.GetDouble(2), reader.GetString(3))
+            End If
+        End Using
+        Return producto
+    End Function
 
     Public Shared Sub AgregarProducto(nombre As String, precio As Decimal, categoria As String)
         Try

@@ -40,7 +40,7 @@ Public Class FormProducto
                 MessageBox.Show("Error al eliminar el producto: " & ex.Message)
             End Try
         Else
-            MessageBox.Show("Seleccione un producto para eliminar.")
+            MessageBox.Show("Seleccione un producto para eliminar, debe clickear en el cuadrado a la izquierda del Id (en la flecha)..")
         End If
     End Sub
 
@@ -59,7 +59,7 @@ Public Class FormProducto
                 MessageBox.Show("Error al modificar el producto: " & ex.Message)
             End Try
         Else
-            MessageBox.Show("Seleccione un producto para modificar.")
+            MessageBox.Show("Seleccione un producto para modificar, debe clickear en el cuadrado a la izquierda del Id (en la flecha).")
         End If
     End Sub
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click

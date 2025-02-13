@@ -18,6 +18,10 @@ Public Class ProductoBLL
         Return ProductoDAL.ObtenerProductos()
     End Function
 
+    Public Shared Function ObtenerProductoPorID(ID As Integer) As Producto
+        Return ProductoDAL.ObtenerProductoPorID(ID)
+    End Function
+
     Public Shared Sub EliminarProducto(ID As Integer)
         ProductoDAL.EliminarProducto(ID)
     End Sub

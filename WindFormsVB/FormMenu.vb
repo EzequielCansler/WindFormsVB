@@ -14,7 +14,8 @@ Public Class FormMenu
         formProducto.Show()
     End Sub
     Private Sub Ventasbtn_Click(sender As Object, e As EventArgs) Handles Ventasbtn.Click
-
+        Dim formVenta As New FormVenta()
+        formVenta.Show()
     End Sub
 
 
