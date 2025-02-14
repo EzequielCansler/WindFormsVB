@@ -35,7 +35,7 @@ Partial Class FormEditarCliente
         '
         'btnGuardar
         '
-        Me.btnGuardar.Location = New System.Drawing.Point(66, 332)
+        Me.btnGuardar.Location = New System.Drawing.Point(67, 332)
         Me.btnGuardar.Name = "btnGuardar"
         Me.btnGuardar.Size = New System.Drawing.Size(75, 23)
         Me.btnGuardar.TabIndex = 0
@@ -45,7 +45,7 @@ Partial Class FormEditarCliente
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(97, 96)
+        Me.Label1.Location = New System.Drawing.Point(120, 99)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(39, 13)
         Me.Label1.TabIndex = 1
@@ -54,7 +54,7 @@ Partial Class FormEditarCliente
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(97, 157)
+        Me.Label3.Location = New System.Drawing.Point(120, 160)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(38, 13)
         Me.Label3.TabIndex = 3
@@ -63,7 +63,7 @@ Partial Class FormEditarCliente
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(97, 217)
+        Me.Label4.Location = New System.Drawing.Point(120, 220)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(49, 13)
         Me.Label4.TabIndex = 4
@@ -71,23 +71,23 @@ Partial Class FormEditarCliente
         '
         'txtCliente
         '
-        Me.txtCliente.Location = New System.Drawing.Point(100, 112)
+        Me.txtCliente.Location = New System.Drawing.Point(66, 115)
         Me.txtCliente.Name = "txtCliente"
-        Me.txtCliente.Size = New System.Drawing.Size(100, 20)
+        Me.txtCliente.Size = New System.Drawing.Size(157, 20)
         Me.txtCliente.TabIndex = 5
         '
         'txtCorreo
         '
-        Me.txtCorreo.Location = New System.Drawing.Point(100, 173)
+        Me.txtCorreo.Location = New System.Drawing.Point(66, 176)
         Me.txtCorreo.Name = "txtCorreo"
-        Me.txtCorreo.Size = New System.Drawing.Size(100, 20)
+        Me.txtCorreo.Size = New System.Drawing.Size(157, 20)
         Me.txtCorreo.TabIndex = 7
         '
         'txtTelefono
         '
-        Me.txtTelefono.Location = New System.Drawing.Point(100, 233)
+        Me.txtTelefono.Location = New System.Drawing.Point(66, 236)
         Me.txtTelefono.Name = "txtTelefono"
-        Me.txtTelefono.Size = New System.Drawing.Size(100, 20)
+        Me.txtTelefono.Size = New System.Drawing.Size(157, 20)
         Me.txtTelefono.TabIndex = 8
         '
         'Label5
@@ -103,7 +103,7 @@ Partial Class FormEditarCliente
         '
         'btnCancelar
         '
-        Me.btnCancelar.Location = New System.Drawing.Point(172, 332)
+        Me.btnCancelar.Location = New System.Drawing.Point(148, 332)
         Me.btnCancelar.Name = "btnCancelar"
         Me.btnCancelar.Size = New System.Drawing.Size(75, 23)
         Me.btnCancelar.TabIndex = 10

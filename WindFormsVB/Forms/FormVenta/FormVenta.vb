@@ -4,7 +4,7 @@ Imports Entidades
 Imports OfficeOpenXml
 
 Public Class FormVenta
-    Private Sub FormVenta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub ActualizarDatos(sender As Object, e As EventArgs) Handles MyBase.Load
         CargarVentas()
     End Sub
 
@@ -60,8 +60,8 @@ Public Class FormVenta
 
     Private Sub btnCrearVenta_Click(sender As Object, e As EventArgs) Handles btnCrearVenta.Click
         Dim formNuevaVenta As New FormNuevaVenta()
+        AddHandler formNuevaVenta.DatosActualizados, AddressOf ActualizarDatos
         formNuevaVenta.ShowDialog()
-        CargarVentas()
     End Sub
 
     Private Sub GenerarReporteVenta(venta As Venta, nombresCliente As String)
@@ -141,4 +141,42 @@ Public Class FormVenta
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
         Me.Close()
     End Sub
+    Private Sub btnModificarVenta_Click(sender As Object, e As EventArgs) Handles btnModificarVenta.Click
+        If VentaDataView.SelectedRows.Count > 0 Then
+            Dim ventaID As Integer = Convert.ToInt32(VentaDataView.SelectedRows(0).Cells("ID").Value)
+            Dim resultado = VentaBLL.ObtenerVentaPorID(ventaID)
+            Dim venta As Venta = resultado.Item1
+            Dim cliente As String = resultado.Item2
+
+            Dim formModificarVenta As New FormEditarVenta(venta, cliente)
+            AddHandler formModificarVenta.DatosActualizados, AddressOf ActualizarDatos 'Subcribirse al evento DatosActualizados
+            If formModificarVenta.ShowDialog() = DialogResult.OK Then
+                CargarVentas()
+            End If
+        Else
+            MessageBox.Show("Por favor, seleccione una venta para modificar.")
+        End If
+    End Sub
+    Private Sub btnEliminarVenta_Click(sender As Object, e As EventArgs) Handles btnEliminarVenta.Click
+        If VentaDataView.SelectedRows.Count > 0 Then
+            Dim ventaID As Integer = Convert.ToInt32(VentaDataView.SelectedRows(0).Cells("ID").Value)
+
+            Dim result As DialogResult = MessageBox.Show("¿Estás seguro de que deseas eliminar esta venta?", "Confirmar eliminación", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                Dim exito As Boolean = VentaBLL.EliminarVenta(ventaID)
+
+                If exito Then
+                    MessageBox.Show("Venta eliminada exitosamente.")
+                    CargarVentas()
+                    VentaItemDataView.DataSource = Nothing
+
+                Else
+                    MessageBox.Show("Hubo un problema al eliminar la venta.")
+                End If
+            End If
+        Else
+            MessageBox.Show("Por favor, seleccione una venta para eliminar.")
+        End If
+    End Sub
+
 End Class

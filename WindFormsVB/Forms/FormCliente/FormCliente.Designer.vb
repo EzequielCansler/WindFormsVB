@@ -48,14 +48,14 @@ Partial Class FormCliente
         '
         Me.ClienteDataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.ClienteDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.ClienteDataView.Location = New System.Drawing.Point(182, 95)
+        Me.ClienteDataView.Location = New System.Drawing.Point(87, 95)
         Me.ClienteDataView.Name = "ClienteDataView"
-        Me.ClienteDataView.Size = New System.Drawing.Size(276, 239)
+        Me.ClienteDataView.Size = New System.Drawing.Size(454, 238)
         Me.ClienteDataView.TabIndex = 4
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(46, 95)
+        Me.TextBox1.Location = New System.Drawing.Point(87, 69)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 5

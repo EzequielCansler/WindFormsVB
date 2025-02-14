@@ -42,7 +42,10 @@ Public Class FormNuevaVenta
         Me.Close()
     End Sub
 
+    Public Event DatosActualizados As EventHandler
+
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
+        RaiseEvent DatosActualizados(Me, EventArgs.Empty)
         Me.Close()
     End Sub
 End Class

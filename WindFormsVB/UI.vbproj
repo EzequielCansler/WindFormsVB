@@ -152,16 +152,16 @@
     <Compile Include="Forms\FormProducto\FormProducto.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormVenta\FormEditarVenta.Designer.vb">
+      <DependentUpon>FormEditarVenta.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormVenta\FormEditarVenta.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\FormVenta\FormNuevaVenta.Designer.vb">
       <DependentUpon>FormNuevaVenta.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormVenta\FormNuevaVenta.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormVenta\FormReporte.Designer.vb">
-      <DependentUpon>FormReporte.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\FormVenta\FormReporte.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormVenta\FormVenta.Designer.vb">
@@ -204,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormProducto\FormProducto.resx">
       <DependentUpon>FormProducto.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormVenta\FormEditarVenta.resx">
+      <DependentUpon>FormEditarVenta.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormVenta\FormNuevaVenta.resx">
       <DependentUpon>FormNuevaVenta.vb</DependentUpon>

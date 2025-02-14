@@ -30,6 +30,7 @@ Partial Class FormNuevoCliente
         Me.Cliente = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.btnGuardar = New System.Windows.Forms.Button()
+        Me.btnVolver = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label1
@@ -45,29 +46,29 @@ Partial Class FormNuevoCliente
         '
         'txtCliente
         '
-        Me.txtCliente.Location = New System.Drawing.Point(79, 122)
+        Me.txtCliente.Location = New System.Drawing.Point(54, 134)
         Me.txtCliente.Name = "txtCliente"
-        Me.txtCliente.Size = New System.Drawing.Size(100, 20)
+        Me.txtCliente.Size = New System.Drawing.Size(156, 20)
         Me.txtCliente.TabIndex = 8
         '
         'txtCorreo
         '
-        Me.txtCorreo.Location = New System.Drawing.Point(79, 184)
+        Me.txtCorreo.Location = New System.Drawing.Point(54, 196)
         Me.txtCorreo.Name = "txtCorreo"
-        Me.txtCorreo.Size = New System.Drawing.Size(100, 20)
+        Me.txtCorreo.Size = New System.Drawing.Size(156, 20)
         Me.txtCorreo.TabIndex = 10
         '
         'txtTelefono
         '
-        Me.txtTelefono.Location = New System.Drawing.Point(79, 248)
+        Me.txtTelefono.Location = New System.Drawing.Point(54, 260)
         Me.txtTelefono.Name = "txtTelefono"
-        Me.txtTelefono.Size = New System.Drawing.Size(100, 20)
+        Me.txtTelefono.Size = New System.Drawing.Size(156, 20)
         Me.txtTelefono.TabIndex = 11
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(76, 232)
+        Me.Label2.Location = New System.Drawing.Point(105, 244)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(49, 13)
         Me.Label2.TabIndex = 12
@@ -76,7 +77,7 @@ Partial Class FormNuevoCliente
         'Cliente
         '
         Me.Cliente.AutoSize = True
-        Me.Cliente.Location = New System.Drawing.Point(76, 106)
+        Me.Cliente.Location = New System.Drawing.Point(105, 118)
         Me.Cliente.Name = "Cliente"
         Me.Cliente.Size = New System.Drawing.Size(39, 13)
         Me.Cliente.TabIndex = 13
@@ -85,7 +86,7 @@ Partial Class FormNuevoCliente
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(76, 168)
+        Me.Label6.Location = New System.Drawing.Point(105, 180)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(38, 13)
         Me.Label6.TabIndex = 16
@@ -93,18 +94,28 @@ Partial Class FormNuevoCliente
         '
         'btnGuardar
         '
-        Me.btnGuardar.Location = New System.Drawing.Point(90, 353)
+        Me.btnGuardar.Location = New System.Drawing.Point(54, 342)
         Me.btnGuardar.Name = "btnGuardar"
         Me.btnGuardar.Size = New System.Drawing.Size(75, 23)
         Me.btnGuardar.TabIndex = 17
         Me.btnGuardar.Text = "Guardar"
         Me.btnGuardar.UseVisualStyleBackColor = True
         '
+        'btnVolver
+        '
+        Me.btnVolver.Location = New System.Drawing.Point(135, 342)
+        Me.btnVolver.Name = "btnVolver"
+        Me.btnVolver.Size = New System.Drawing.Size(75, 23)
+        Me.btnVolver.TabIndex = 18
+        Me.btnVolver.Text = "Volver"
+        Me.btnVolver.UseVisualStyleBackColor = True
+        '
         'FormNuevoCliente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(262, 400)
+        Me.Controls.Add(Me.btnVolver)
         Me.Controls.Add(Me.btnGuardar)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Cliente)
@@ -128,4 +139,5 @@ Partial Class FormNuevoCliente
     Friend WithEvents Cliente As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents btnGuardar As Button
+    Friend WithEvents btnVolver As Button
 End Class

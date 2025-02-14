@@ -22,8 +22,8 @@ Partial Class FormVenta
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.btnEliminar = New System.Windows.Forms.Button()
-        Me.btnModificar = New System.Windows.Forms.Button()
+        Me.btnEliminarVenta = New System.Windows.Forms.Button()
+        Me.btnModificarVenta = New System.Windows.Forms.Button()
         Me.btnVolver = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
@@ -37,23 +37,23 @@ Partial Class FormVenta
         CType(Me.VentaItemDataView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'btnEliminar
+        'btnEliminarVenta
         '
-        Me.btnEliminar.Location = New System.Drawing.Point(269, 402)
-        Me.btnEliminar.Name = "btnEliminar"
-        Me.btnEliminar.Size = New System.Drawing.Size(87, 23)
-        Me.btnEliminar.TabIndex = 16
-        Me.btnEliminar.Text = "Eliminar Venta"
-        Me.btnEliminar.UseVisualStyleBackColor = True
+        Me.btnEliminarVenta.Location = New System.Drawing.Point(241, 402)
+        Me.btnEliminarVenta.Name = "btnEliminarVenta"
+        Me.btnEliminarVenta.Size = New System.Drawing.Size(87, 23)
+        Me.btnEliminarVenta.TabIndex = 16
+        Me.btnEliminarVenta.Text = "Eliminar Venta"
+        Me.btnEliminarVenta.UseVisualStyleBackColor = True
         '
-        'btnModificar
+        'btnModificarVenta
         '
-        Me.btnModificar.Location = New System.Drawing.Point(158, 402)
-        Me.btnModificar.Name = "btnModificar"
-        Me.btnModificar.Size = New System.Drawing.Size(92, 23)
-        Me.btnModificar.TabIndex = 15
-        Me.btnModificar.Text = "Modificar Venta"
-        Me.btnModificar.UseVisualStyleBackColor = True
+        Me.btnModificarVenta.Location = New System.Drawing.Point(129, 402)
+        Me.btnModificarVenta.Name = "btnModificarVenta"
+        Me.btnModificarVenta.Size = New System.Drawing.Size(92, 23)
+        Me.btnModificarVenta.TabIndex = 15
+        Me.btnModificarVenta.Text = "Modificar Venta"
+        Me.btnModificarVenta.UseVisualStyleBackColor = True
         '
         'btnVolver
         '
@@ -87,14 +87,14 @@ Partial Class FormVenta
         '
         Me.VentaDataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.VentaDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.VentaDataView.Location = New System.Drawing.Point(58, 97)
+        Me.VentaDataView.Location = New System.Drawing.Point(30, 97)
         Me.VentaDataView.Name = "VentaDataView"
         Me.VentaDataView.Size = New System.Drawing.Size(298, 268)
         Me.VentaDataView.TabIndex = 11
         '
         'btnCrearVenta
         '
-        Me.btnCrearVenta.Location = New System.Drawing.Point(58, 402)
+        Me.btnCrearVenta.Location = New System.Drawing.Point(30, 402)
         Me.btnCrearVenta.Name = "btnCrearVenta"
         Me.btnCrearVenta.Size = New System.Drawing.Size(75, 23)
         Me.btnCrearVenta.TabIndex = 10
@@ -114,9 +114,9 @@ Partial Class FormVenta
         '
         Me.VentaItemDataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.VentaItemDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.VentaItemDataView.Location = New System.Drawing.Point(449, 97)
+        Me.VentaItemDataView.Location = New System.Drawing.Point(362, 97)
         Me.VentaItemDataView.Name = "VentaItemDataView"
-        Me.VentaItemDataView.Size = New System.Drawing.Size(318, 268)
+        Me.VentaItemDataView.Size = New System.Drawing.Size(427, 268)
         Me.VentaItemDataView.TabIndex = 18
         '
         'Label2
@@ -146,8 +146,8 @@ Partial Class FormVenta
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.VentaItemDataView)
         Me.Controls.Add(Me.btnReporte)
-        Me.Controls.Add(Me.btnEliminar)
-        Me.Controls.Add(Me.btnModificar)
+        Me.Controls.Add(Me.btnEliminarVenta)
+        Me.Controls.Add(Me.btnModificarVenta)
         Me.Controls.Add(Me.btnVolver)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBox1)
@@ -162,8 +162,8 @@ Partial Class FormVenta
 
     End Sub
 
-    Friend WithEvents btnEliminar As Button
-    Friend WithEvents btnModificar As Button
+    Friend WithEvents btnEliminarVenta As Button
+    Friend WithEvents btnModificarVenta As Button
     Friend WithEvents btnVolver As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents TextBox1 As TextBox

@@ -4,6 +4,9 @@ Imports Entidades
 Public Class ProductoBLL
     Public Shared Sub AgregarOEditarProducto(ID As Integer, nombre As String, precio As Decimal, categoria As String)
         Try
+            If precio <= 0 Then
+                Throw New Exception("El precio debe ser mayor a 0")
+            End If
             If ID = 0 Then
                 ProductoDAL.AgregarProducto(nombre, precio, categoria)
             Else
