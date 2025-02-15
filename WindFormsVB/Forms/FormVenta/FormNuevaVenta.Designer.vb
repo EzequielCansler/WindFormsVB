@@ -37,7 +37,7 @@ Partial Class FormNuevaVenta
         'cmbCliente
         '
         Me.cmbCliente.FormattingEnabled = True
-        Me.cmbCliente.Location = New System.Drawing.Point(58, 89)
+        Me.cmbCliente.Location = New System.Drawing.Point(58, 82)
         Me.cmbCliente.Name = "cmbCliente"
         Me.cmbCliente.Size = New System.Drawing.Size(121, 21)
         Me.cmbCliente.TabIndex = 0
@@ -46,14 +46,14 @@ Partial Class FormNuevaVenta
         'ProductoDataView
         '
         Me.ProductoDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.ProductoDataView.Location = New System.Drawing.Point(230, 82)
+        Me.ProductoDataView.Location = New System.Drawing.Point(58, 114)
         Me.ProductoDataView.Name = "ProductoDataView"
-        Me.ProductoDataView.Size = New System.Drawing.Size(240, 150)
+        Me.ProductoDataView.Size = New System.Drawing.Size(673, 228)
         Me.ProductoDataView.TabIndex = 1
         '
         'numCantidad
         '
-        Me.numCantidad.Location = New System.Drawing.Point(230, 241)
+        Me.numCantidad.Location = New System.Drawing.Point(154, 348)
         Me.numCantidad.Name = "numCantidad"
         Me.numCantidad.Size = New System.Drawing.Size(120, 20)
         Me.numCantidad.TabIndex = 2
@@ -61,7 +61,7 @@ Partial Class FormNuevaVenta
         'btnCrear
         '
         Me.btnCrear.AccessibleRole = System.Windows.Forms.AccessibleRole.SpinButton
-        Me.btnCrear.Location = New System.Drawing.Point(58, 338)
+        Me.btnCrear.Location = New System.Drawing.Point(58, 488)
         Me.btnCrear.Name = "btnCrear"
         Me.btnCrear.Size = New System.Drawing.Size(75, 23)
         Me.btnCrear.TabIndex = 3
@@ -70,7 +70,7 @@ Partial Class FormNuevaVenta
         '
         'btnAgregar
         '
-        Me.btnAgregar.Location = New System.Drawing.Point(395, 238)
+        Me.btnAgregar.Location = New System.Drawing.Point(58, 348)
         Me.btnAgregar.Name = "btnAgregar"
         Me.btnAgregar.Size = New System.Drawing.Size(75, 23)
         Me.btnAgregar.TabIndex = 4
@@ -79,7 +79,7 @@ Partial Class FormNuevaVenta
         '
         'btnVolver
         '
-        Me.btnVolver.Location = New System.Drawing.Point(586, 338)
+        Me.btnVolver.Location = New System.Drawing.Point(656, 474)
         Me.btnVolver.Name = "btnVolver"
         Me.btnVolver.Size = New System.Drawing.Size(75, 23)
         Me.btnVolver.TabIndex = 5
@@ -89,7 +89,7 @@ Partial Class FormNuevaVenta
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(55, 73)
+        Me.Label1.Location = New System.Drawing.Point(55, 60)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(44, 13)
         Me.Label1.TabIndex = 6
@@ -110,7 +110,7 @@ Partial Class FormNuevaVenta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(732, 448)
+        Me.ClientSize = New System.Drawing.Size(767, 563)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnVolver)

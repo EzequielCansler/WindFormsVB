@@ -40,7 +40,29 @@ Public Class ClienteDAL
             Throw New Exception("Error al agregar el cliente: " & ex.Message)
         End Try
     End Sub
+    Public Shared Function BuscarClientesPorNombre(nombre As String) As List(Of Cliente)
+        Dim clientes As New List(Of Cliente)
+        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+            conn.Open()
+            Dim query As String = "SELECT * FROM Clientes WHERE Cliente LIKE @nombre"
+            Using cmd As New SqlCommand(query, conn)
+                cmd.Parameters.AddWithValue("@nombre", "%" & nombre & "%")
 
+                Using reader As SqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        Dim cliente As New Cliente()
+                        cliente.ID = reader.GetInt32(reader.GetOrdinal("ID"))
+                        cliente.Cliente = reader.GetString(reader.GetOrdinal("Cliente"))
+                        cliente.Correo = reader.GetString(reader.GetOrdinal("Correo"))
+                        cliente.Telefono = reader.GetString(reader.GetOrdinal("Telefono"))
+                        clientes.Add(cliente)
+                    End While
+                End Using
+            End Using
+        End Using
+
+        Return clientes
+    End Function
     Public Shared Sub EditarCliente(ID As Integer, cliente As String, correo As String, telefono As String)
         Try
             Using conn As SqlConnection = ConexionBD.ObtenerConexion()

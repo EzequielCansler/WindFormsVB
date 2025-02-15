@@ -20,6 +20,37 @@ Public Class VentaDAL
         End Using
         Return (ventas, nombreCliente)
     End Function
+    Public Shared Function ObtenerVentasPorOrden(orden As String) As List(Of Venta)
+        Dim ventas As New List(Of Venta)()
+
+        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+            conn.Open()
+
+            ' Consulta SQL para ordenar según la fecha
+            Dim query As String
+            If orden = "ascendente" Then
+                query = "SELECT * FROM Ventas ORDER BY Fecha ASC"
+            Else
+                query = "SELECT * FROM Ventas ORDER BY Fecha DESC"
+            End If
+
+            Using cmd As New SqlCommand(query, conn)
+                Using reader As SqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        Dim venta As New Venta()
+                        venta.ID = reader.GetInt32(reader.GetOrdinal("ID"))
+                        venta.IDCliente = reader.GetInt32(reader.GetOrdinal("IDCliente"))
+                        venta.Fecha = reader.GetDateTime(reader.GetOrdinal("Fecha"))
+                        venta.Total = reader.GetDouble(reader.GetOrdinal("Total"))
+                        ventas.Add(venta)
+                    End While
+                End Using
+            End Using
+        End Using
+
+        Return ventas
+    End Function
+
     Public Shared Function ObtenerVentaPorID(ID As Integer) As (Venta, String)
         Dim venta As Venta = Nothing
         Dim cliente As String = String.Empty
@@ -110,81 +141,6 @@ Public Class VentaDAL
             End Try
         End Using
     End Sub
-
-    Public Shared Sub ModificarVenta(venta As Venta, detalles As List(Of VentaItem))
-        Using connection As SqlConnection = ConexionBD.ObtenerConexion()
-            connection.Open()
-
-            ' Actualizar la venta (fecha, total, cliente)
-            Dim queryVenta As String = "UPDATE ventas SET Fecha = @Fecha, Total = @Total, IDCliente = @IDCliente WHERE ID = @ID"
-            Using command As New SqlCommand(queryVenta, connection)
-                command.Parameters.AddWithValue("@Fecha", venta.Fecha)
-                command.Parameters.AddWithValue("@Total", venta.Total)
-                command.Parameters.AddWithValue("@IDCliente", venta.IDCliente)
-                command.Parameters.AddWithValue("@ID", venta.ID)
-                command.ExecuteNonQuery()
-            End Using
-
-            ' Obtener las cantidades actuales de los productos en la venta
-            Dim queryStock As String = "SELECT IDProducto, Cantidad FROM ventasitems WHERE IDVenta = @IDVenta"
-            Dim productosEnVenta As New Dictionary(Of Integer, Integer) ' IDProducto, Cantidad
-            Using cmdStock As New SqlCommand(queryStock, connection)
-                cmdStock.Parameters.AddWithValue("@IDVenta", venta.ID)
-                Using reader As SqlDataReader = cmdStock.ExecuteReader()
-                    While reader.Read()
-                        productosEnVenta.Add(reader.GetInt32(0), reader.GetDouble(1)) ' ProductoID, Cantidad actual
-                    End While
-                End Using
-            End Using
-
-            ' Comprobar si la cantidad a restar o agregar es válida y actualizar los productos
-            For Each item As VentaItem In detalles
-                ' Verificar si el producto ya está en la venta
-                If productosEnVenta.ContainsKey(item.IDProducto) Then
-                    Dim cantidadActual As Integer = productosEnVenta(item.IDProducto)
-
-                    ' Si se quiere agregar productos, asegurarse de que no exceda el stock máximo (ej. 5 unidades disponibles)
-                    If item.Cantidad > cantidadActual Then
-                        ' Agregar productos si es posible
-                        Dim queryAgregarProducto As String = "UPDATE ventasitems SET Cantidad = @Cantidad, PrecioTotal = @PrecioTotal WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
-                        Using cmdAgregar As New SqlCommand(queryAgregarProducto, connection)
-                            cmdAgregar.Parameters.AddWithValue("@Cantidad", item.Cantidad)
-                            cmdAgregar.Parameters.AddWithValue("@PrecioTotal", item.Cantidad * item.PrecioUnitario)
-                            cmdAgregar.Parameters.AddWithValue("@IDVenta", venta.ID)
-                            cmdAgregar.Parameters.AddWithValue("@IDProducto", item.IDProducto)
-                            cmdAgregar.ExecuteNonQuery()
-                        End Using
-                    Else
-                        ' Si se quiere restar productos, asegurarse de que no se reste más de lo que hay en stock
-                        If item.Cantidad <= cantidadActual Then
-                            Dim queryRestarProducto As String = "UPDATE ventasitems SET Cantidad = @Cantidad, PrecioTotal = @PrecioTotal WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
-                            Using cmdRestar As New SqlCommand(queryRestarProducto, connection)
-                                cmdRestar.Parameters.AddWithValue("@Cantidad", item.Cantidad)
-                                cmdRestar.Parameters.AddWithValue("@PrecioTotal", item.Cantidad * item.PrecioUnitario)
-                                cmdRestar.Parameters.AddWithValue("@IDVenta", venta.ID)
-                                cmdRestar.Parameters.AddWithValue("@IDProducto", item.IDProducto)
-                                cmdRestar.ExecuteNonQuery()
-                            End Using
-                        Else
-                            Throw New Exception("No puedes restar más productos de los que existen en la venta.")
-                        End If
-                    End If
-                Else
-                    ' Si el producto no está en la venta, agregarlo
-                    Dim queryInsertar As String = "INSERT INTO ventasitems (IDVenta, IDProducto, Cantidad, PrecioUnitario, PrecioTotal) VALUES (@IDVenta, @IDProducto, @Cantidad, @PrecioUnitario, @PrecioTotal)"
-                    Using cmdInsertar As New SqlCommand(queryInsertar, connection)
-                        cmdInsertar.Parameters.AddWithValue("@IDVenta", venta.ID)
-                        cmdInsertar.Parameters.AddWithValue("@IDProducto", item.IDProducto)
-                        cmdInsertar.Parameters.AddWithValue("@Cantidad", item.Cantidad)
-                        cmdInsertar.Parameters.AddWithValue("@PrecioUnitario", item.PrecioUnitario)
-                        cmdInsertar.Parameters.AddWithValue("@PrecioTotal", item.Cantidad * item.PrecioUnitario)
-                        cmdInsertar.ExecuteNonQuery()
-                    End Using
-                End If
-            Next
-        End Using
-    End Sub
-
     Private Shared Function ObtenerPrecioUnitario(productoID As Integer, conexion As SqlConnection) As Double
         Dim query As String = "SELECT Precio FROM productos WHERE ID = @IDProducto"
         Using cmd As New SqlCommand(query, conexion)
@@ -220,48 +176,99 @@ Public Class VentaDAL
             End Using
         End Using
     End Sub
-    Public Shared Sub AgregarProductoAVenta(idVenta As Integer, idProducto As Integer, precioUnitario As Double, cantidad As Integer, precioTotal As Double)
+    Public Shared Function ObtenerDetallesVenta(idVenta As Integer) As List(Of VentaItem)
+        Dim detalles As New List(Of VentaItem)
         Using conn As SqlConnection = ConexionBD.ObtenerConexion()
-            Dim query As String = "INSERT INTO ventasitems (IDVenta, IDProducto, PrecioUnitario, Cantidad, PrecioTotal) VALUES (@IDVenta, @IDProducto, @PrecioUnitario, @Cantidad, @PrecioTotal)"
+            conn.Open()
+            Dim query As String = "SELECT * FROM VentaDetalle WHERE IDVenta = @IDVenta"
             Using cmd As New SqlCommand(query, conn)
                 cmd.Parameters.AddWithValue("@IDVenta", idVenta)
-                cmd.Parameters.AddWithValue("@IDProducto", idProducto)
-                cmd.Parameters.AddWithValue("@PrecioUnitario", precioUnitario)
-                cmd.Parameters.AddWithValue("@Cantidad", cantidad)
-                cmd.Parameters.AddWithValue("@PrecioTotal", precioTotal)
-                conn.Open()
-                cmd.ExecuteNonQuery()
+                Using reader As SqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        detalles.Add(New VentaItem(reader("ID"), reader("IDVenta"), reader("IDProducto"), reader("PrecioUnitario"), reader("Cantidad"), reader("PrecioTotal")))
+                    End While
+                End Using
             End Using
         End Using
-    End Sub
-    Public Shared Sub RestarCantidadProductoEnVenta(idVenta As Integer, idProducto As Integer, cantidad As Integer)
-        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
-            Dim query As String = "UPDATE ventasitems SET Cantidad = Cantidad - @Cantidad, PrecioTotal = PrecioUnitario * (Cantidad - @Cantidad) WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
-            Using cmd As New SqlCommand(query, conn)
-                cmd.Parameters.AddWithValue("@IDVenta", idVenta)
-                cmd.Parameters.AddWithValue("@IDProducto", idProducto)
-                cmd.Parameters.AddWithValue("@Cantidad", cantidad)
-                conn.Open()
-                cmd.ExecuteNonQuery()
-            End Using
-            query = "SELECT Cantidad FROM ventasitems WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
-            Using cmd As New SqlCommand(query, conn)
-                cmd.Parameters.AddWithValue("@IDVenta", idVenta)
-                cmd.Parameters.AddWithValue("@IDProducto", idProducto)
-                Dim nuevaCantidad As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+        Return detalles
+    End Function
 
-                ' Si la cantidad es 0 o menor, eliminamos el producto de la venta
-                If nuevaCantidad <= 0 Then
-                    query = "DELETE FROM ventasitems WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
-                    Using deleteCmd As New SqlCommand(query, conn)
-                        deleteCmd.Parameters.AddWithValue("@IDVenta", idVenta)
-                        deleteCmd.Parameters.AddWithValue("@IDProducto", idProducto)
-                        deleteCmd.ExecuteNonQuery()
-                    End Using
-                End If
+    Public Shared Sub ModificarVenta(venta As Venta, detalles As List(Of VentaItem), accion As String, transaction As SqlTransaction)
+        Dim conn As SqlConnection = transaction.Connection
+
+        If accion = "modificar" Then
+            ' Modificar la venta
+            Dim queryVenta As String = "UPDATE ventas SET IDCliente = @IDCliente WHERE ID = @ID"
+            Using cmdVenta As New SqlCommand(queryVenta, conn, transaction)
+                cmdVenta.Parameters.AddWithValue("@ID", venta.ID)
+                cmdVenta.Parameters.AddWithValue("@IDCliente", venta.IDCliente)
+                cmdVenta.ExecuteNonQuery()
             End Using
-        End Using
+
+            ' Eliminar productos previos
+            Dim queryEliminar As String = "DELETE FROM ventasitems WHERE IDVenta = @IDVenta"
+            Using cmdEliminar As New SqlCommand(queryEliminar, conn, transaction)
+                cmdEliminar.Parameters.AddWithValue("@IDVenta", venta.ID)
+                cmdEliminar.ExecuteNonQuery()
+            End Using
+
+            ' Insertar nuevos productos
+            Dim queryInsert As String = "INSERT INTO ventasitems (IDVenta, IDProducto, PrecioUnitario, Cantidad, PrecioTotal) VALUES (@IDVenta, @IDProducto, @PrecioUnitario, @Cantidad, @PrecioTotal)"
+            For Each detalle In detalles
+                Using cmdDetalle As New SqlCommand(queryInsert, conn, transaction)
+                    cmdDetalle.Parameters.AddWithValue("@IDVenta", detalle.IDVenta)
+                    cmdDetalle.Parameters.AddWithValue("@IDProducto", detalle.IDProducto)
+                    cmdDetalle.Parameters.AddWithValue("@PrecioUnitario", detalle.PrecioUnitario)
+                    cmdDetalle.Parameters.AddWithValue("@Cantidad", detalle.Cantidad)
+                    cmdDetalle.Parameters.AddWithValue("@PrecioTotal", detalle.PrecioTotal)
+                    cmdDetalle.ExecuteNonQuery()
+                End Using
+            Next
+
+        ElseIf accion = "agregarProducto" Then
+            ' Agregar o actualizar cantidad del producto en la venta
+            Dim queryActualizar As String = "UPDATE ventasitems SET Cantidad = Cantidad + @Cantidad, PrecioTotal = PrecioUnitario * (Cantidad + @Cantidad) WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto"
+            Dim filasAfectadas As Integer
+            Using cmdActualizar As New SqlCommand(queryActualizar, conn, transaction)
+                cmdActualizar.Parameters.AddWithValue("@IDVenta", venta.ID)
+                cmdActualizar.Parameters.AddWithValue("@IDProducto", detalles(0).IDProducto)
+                cmdActualizar.Parameters.AddWithValue("@Cantidad", detalles(0).Cantidad)
+                filasAfectadas = cmdActualizar.ExecuteNonQuery()
+            End Using
+
+            ' Si el producto no existe en la venta, insertarlo
+            If filasAfectadas = 0 Then
+                Dim queryInsert As String = "INSERT INTO ventasitems (IDVenta, IDProducto, PrecioUnitario, Cantidad, PrecioTotal) VALUES (@IDVenta, @IDProducto, @PrecioUnitario, @Cantidad, @PrecioTotal)"
+                Using cmdInsert As New SqlCommand(queryInsert, conn, transaction)
+                    cmdInsert.Parameters.AddWithValue("@IDVenta", detalles(0).IDVenta)
+                    cmdInsert.Parameters.AddWithValue("@IDProducto", detalles(0).IDProducto)
+                    cmdInsert.Parameters.AddWithValue("@PrecioUnitario", detalles(0).PrecioUnitario)
+                    cmdInsert.Parameters.AddWithValue("@Cantidad", detalles(0).Cantidad)
+                    cmdInsert.Parameters.AddWithValue("@PrecioTotal", detalles(0).PrecioTotal)
+                    cmdInsert.ExecuteNonQuery()
+                End Using
+            End If
+
+        ElseIf accion = "eliminarProducto" Then
+            ' Restar cantidad del producto en la venta
+            Dim queryRestar As String = "UPDATE ventasitems SET Cantidad = Cantidad - @Cantidad, PrecioTotal = PrecioUnitario * (Cantidad - @Cantidad) WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto AND Cantidad >= @Cantidad"
+            Using cmdRestar As New SqlCommand(queryRestar, conn, transaction)
+                cmdRestar.Parameters.AddWithValue("@IDVenta", venta.ID)
+                cmdRestar.Parameters.AddWithValue("@IDProducto", detalles(0).IDProducto)
+                cmdRestar.Parameters.AddWithValue("@Cantidad", detalles(0).Cantidad)
+                cmdRestar.ExecuteNonQuery()
+            End Using
+
+            ' Eliminar el producto si la cantidad es 0 o menor
+            Dim queryEliminarProducto As String = "DELETE FROM ventasitems WHERE IDVenta = @IDVenta AND IDProducto = @IDProducto AND Cantidad <= 0"
+            Using cmdEliminar As New SqlCommand(queryEliminarProducto, conn, transaction)
+                cmdEliminar.Parameters.AddWithValue("@IDVenta", venta.ID)
+                cmdEliminar.Parameters.AddWithValue("@IDProducto", detalles(0).IDProducto)
+                cmdEliminar.ExecuteNonQuery()
+            End Using
+        End If
     End Sub
+
     Public Shared Function EliminarVenta(ventaID As Integer) As Boolean
         Try
             Using conn As SqlConnection = ConexionBD.ObtenerConexion()
@@ -280,4 +287,23 @@ Public Class VentaDAL
             Return False
         End Try
     End Function
+    Public Shared Function RollbackTransaccion() As String
+        Try
+            Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+                conn.Open()
+                Using transaction As SqlTransaction = conn.BeginTransaction()
+                    Try
+                        transaction.Rollback()
+                        Return "Los cambios han sido descartados exitosamente."
+                    Catch ex As Exception
+                        Throw New Exception("Error al intentar descartar cambios: " & ex.Message)
+                    End Try
+                End Using
+            End Using
+        Catch ex As Exception
+            Throw New Exception("Error al conectarse a la base de datos: " & ex.Message)
+        End Try
+    End Function
 End Class
+
+

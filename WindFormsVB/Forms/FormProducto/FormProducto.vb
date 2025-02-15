@@ -1,4 +1,5 @@
 ﻿Imports BLL
+Imports Entidades
 
 Public Class FormProducto
     Private Sub FormCliente_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -64,5 +65,16 @@ Public Class FormProducto
     End Sub
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
         Me.Close()
+    End Sub
+
+    Private Sub TextBox_Buscar(sender As Object, e As EventArgs) Handles tbBuscar.TextChanged
+        Dim nombreProducto As String = tbBuscar.Text
+        If Not String.IsNullOrEmpty(nombreProducto) Then
+            Dim productosFiltrados As List(Of Producto) = ProductoBLL.ObtenerProductosPorNombre(nombreProducto)
+            ProductoDataView.DataSource = productosFiltrados
+        Else
+            Dim todosLosProductos As List(Of Producto) = ProductoBLL.ObtenerProductos()
+            ProductoDataView.DataSource = todosLosProductos
+        End If
     End Sub
 End Class

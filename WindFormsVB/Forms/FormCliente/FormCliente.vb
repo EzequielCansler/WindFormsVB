@@ -1,4 +1,5 @@
 ﻿Imports BLL
+Imports Entidades
 
 Public Class FormCliente
 
@@ -66,5 +67,14 @@ Public Class FormCliente
     Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
         Me.Close()
     End Sub
-
+    Private Sub TextBox_Buscar(sender As Object, e As EventArgs) Handles tbBuscar.TextChanged
+        Dim nombreCliente As String = tbBuscar.Text
+        If Not String.IsNullOrEmpty(nombreCliente) Then
+            Dim clientesFiltrados As List(Of Cliente) = ClienteBLL.ObtenerClientesPorNombre(nombreCliente)
+            ClienteDataView.DataSource = clientesFiltrados
+        Else
+            Dim todosLosClientes As List(Of Cliente) = ClienteBLL.ObtenerClientes()
+            ClienteDataView.DataSource = todosLosClientes
+        End If
+    End Sub
 End Class

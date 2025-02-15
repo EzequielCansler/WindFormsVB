@@ -20,7 +20,9 @@ Public Class ProductoBLL
     Public Shared Function ObtenerProductos() As List(Of Producto)
         Return ProductoDAL.ObtenerProductos()
     End Function
-
+    Public Shared Function ObtenerProductosPorNombre(nombre As String) As List(Of Producto)
+        Return ProductoDAL.BuscarProductosPorNombre(nombre)
+    End Function
     Public Shared Function ObtenerProductoPorID(ID As Integer) As Producto
         Return ProductoDAL.ObtenerProductoPorID(ID)
     End Function

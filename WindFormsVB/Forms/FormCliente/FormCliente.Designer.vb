@@ -25,12 +25,13 @@ Partial Class FormCliente
         Me.components = New System.ComponentModel.Container()
         Me.btnNuevo = New System.Windows.Forms.Button()
         Me.ClienteDataView = New System.Windows.Forms.DataGridView()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.tbBuscar = New System.Windows.Forms.TextBox()
         Me.BindingSource1 = New System.Windows.Forms.BindingSource(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnVolver = New System.Windows.Forms.Button()
         Me.btnModificar = New System.Windows.Forms.Button()
         Me.btnEliminar = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
         CType(Me.ClienteDataView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BindingSource1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -48,18 +49,17 @@ Partial Class FormCliente
         '
         Me.ClienteDataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
         Me.ClienteDataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.ClienteDataView.Location = New System.Drawing.Point(87, 95)
+        Me.ClienteDataView.Location = New System.Drawing.Point(46, 95)
         Me.ClienteDataView.Name = "ClienteDataView"
-        Me.ClienteDataView.Size = New System.Drawing.Size(454, 238)
+        Me.ClienteDataView.Size = New System.Drawing.Size(495, 238)
         Me.ClienteDataView.TabIndex = 4
         '
-        'TextBox1
+        'tbBuscar
         '
-        Me.TextBox1.Location = New System.Drawing.Point(87, 69)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 5
-        Me.TextBox1.Text = "Buscar"
+        Me.tbBuscar.Location = New System.Drawing.Point(46, 69)
+        Me.tbBuscar.Name = "tbBuscar"
+        Me.tbBuscar.Size = New System.Drawing.Size(134, 20)
+        Me.tbBuscar.TabIndex = 5
         '
         'Label1
         '
@@ -99,16 +99,26 @@ Partial Class FormCliente
         Me.btnEliminar.Text = "Eliminar"
         Me.btnEliminar.UseVisualStyleBackColor = True
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(43, 53)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(96, 13)
+        Me.Label2.TabIndex = 10
+        Me.Label2.Text = "Buscar por nombre"
+        '
         'FormCliente
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(631, 464)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.btnEliminar)
         Me.Controls.Add(Me.btnModificar)
         Me.Controls.Add(Me.btnVolver)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.TextBox1)
+        Me.Controls.Add(Me.tbBuscar)
         Me.Controls.Add(Me.ClienteDataView)
         Me.Controls.Add(Me.btnNuevo)
         Me.Name = "FormCliente"
@@ -122,10 +132,11 @@ Partial Class FormCliente
 
     Friend WithEvents btnNuevo As Button
     Friend WithEvents ClienteDataView As DataGridView
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents tbBuscar As TextBox
     Friend WithEvents BindingSource1 As BindingSource
     Friend WithEvents Label1 As Label
     Friend WithEvents btnVolver As Button
     Friend WithEvents btnModificar As Button
     Friend WithEvents btnEliminar As Button
+    Friend WithEvents Label2 As Label
 End Class

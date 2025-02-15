@@ -22,7 +22,7 @@ Partial Class FormEditarVenta
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btnVolver = New System.Windows.Forms.Button()
+        Me.btnCancelar = New System.Windows.Forms.Button()
         Me.DataGridViewVenta = New System.Windows.Forms.DataGridView()
         Me.DataGridViewProductos = New System.Windows.Forms.DataGridView()
         Me.ComboBoxClientes = New System.Windows.Forms.ComboBox()
@@ -39,19 +39,19 @@ Partial Class FormEditarVenta
         CType(Me.numCantidad, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'btnVolver
+        'btnCancelar
         '
-        Me.btnVolver.Location = New System.Drawing.Point(941, 559)
-        Me.btnVolver.Name = "btnVolver"
-        Me.btnVolver.Size = New System.Drawing.Size(75, 23)
-        Me.btnVolver.TabIndex = 0
-        Me.btnVolver.Text = "Volver"
-        Me.btnVolver.UseVisualStyleBackColor = True
+        Me.btnCancelar.Location = New System.Drawing.Point(941, 559)
+        Me.btnCancelar.Name = "btnCancelar"
+        Me.btnCancelar.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancelar.TabIndex = 0
+        Me.btnCancelar.Text = "Cancelar"
+        Me.btnCancelar.UseVisualStyleBackColor = True
         '
         'DataGridViewVenta
         '
         Me.DataGridViewVenta.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridViewVenta.Location = New System.Drawing.Point(37, 222)
+        Me.DataGridViewVenta.Location = New System.Drawing.Point(26, 222)
         Me.DataGridViewVenta.Name = "DataGridViewVenta"
         Me.DataGridViewVenta.Size = New System.Drawing.Size(468, 240)
         Me.DataGridViewVenta.TabIndex = 1
@@ -59,15 +59,15 @@ Partial Class FormEditarVenta
         'DataGridViewProductos
         '
         Me.DataGridViewProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridViewProductos.Location = New System.Drawing.Point(538, 222)
+        Me.DataGridViewProductos.Location = New System.Drawing.Point(519, 222)
         Me.DataGridViewProductos.Name = "DataGridViewProductos"
-        Me.DataGridViewProductos.Size = New System.Drawing.Size(477, 240)
+        Me.DataGridViewProductos.Size = New System.Drawing.Size(517, 240)
         Me.DataGridViewProductos.TabIndex = 2
         '
         'ComboBoxClientes
         '
         Me.ComboBoxClientes.FormattingEnabled = True
-        Me.ComboBoxClientes.Location = New System.Drawing.Point(37, 184)
+        Me.ComboBoxClientes.Location = New System.Drawing.Point(26, 180)
         Me.ComboBoxClientes.Name = "ComboBoxClientes"
         Me.ComboBoxClientes.Size = New System.Drawing.Size(121, 21)
         Me.ComboBoxClientes.TabIndex = 3
@@ -75,7 +75,7 @@ Partial Class FormEditarVenta
         'Clientes
         '
         Me.Clientes.AutoSize = True
-        Me.Clientes.Location = New System.Drawing.Point(34, 161)
+        Me.Clientes.Location = New System.Drawing.Point(23, 164)
         Me.Clientes.Name = "Clientes"
         Me.Clientes.Size = New System.Drawing.Size(39, 13)
         Me.Clientes.TabIndex = 4
@@ -118,7 +118,7 @@ Partial Class FormEditarVenta
         'cbProductos
         '
         Me.cbProductos.FormattingEnabled = True
-        Me.cbProductos.Location = New System.Drawing.Point(537, 181)
+        Me.cbProductos.Location = New System.Drawing.Point(519, 181)
         Me.cbProductos.Name = "cbProductos"
         Me.cbProductos.Size = New System.Drawing.Size(121, 21)
         Me.cbProductos.TabIndex = 9
@@ -126,7 +126,7 @@ Partial Class FormEditarVenta
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(534, 161)
+        Me.Label1.Location = New System.Drawing.Point(516, 165)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(111, 13)
         Me.Label1.TabIndex = 10
@@ -159,7 +159,7 @@ Partial Class FormEditarVenta
         Me.Controls.Add(Me.ComboBoxClientes)
         Me.Controls.Add(Me.DataGridViewProductos)
         Me.Controls.Add(Me.DataGridViewVenta)
-        Me.Controls.Add(Me.btnVolver)
+        Me.Controls.Add(Me.btnCancelar)
         Me.Name = "FormEditarVenta"
         Me.Text = "FormEditarVenta"
         CType(Me.DataGridViewVenta, System.ComponentModel.ISupportInitialize).EndInit()
@@ -170,7 +170,7 @@ Partial Class FormEditarVenta
 
     End Sub
 
-    Friend WithEvents btnVolver As Button
+    Friend WithEvents btnCancelar As Button
     Friend WithEvents DataGridViewVenta As DataGridView
     Friend WithEvents DataGridViewProductos As DataGridView
     Friend WithEvents ComboBoxClientes As ComboBox

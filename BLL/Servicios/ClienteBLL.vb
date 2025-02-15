@@ -18,7 +18,9 @@ Public Class ClienteBLL
     Public Shared Function ObtenerClientes() As List(Of Cliente)
         Return ClienteDAL.ObtenerClientes()
     End Function
-
+    Public Shared Function ObtenerClientesPorNombre(nombre As String) As List(Of Cliente)
+        Return ClienteDAL.BuscarClientesPorNombre(nombre)
+    End Function
     Public Shared Sub EliminarCliente(ID As Integer)
         ClienteDAL.EliminarCliente(ID)
     End Sub

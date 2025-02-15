@@ -1,48 +1,24 @@
-﻿Imports BLL
+﻿Imports System.Data.SqlClient
+Imports BLL
 Imports Entidades
 
 Public Class FormEditarVenta
     Dim venta As Venta
     Dim cliente As String
     Dim detalles As List(Of VentaItem)
+    Public Event DatosActualizados As EventHandler
 
-    Public Sub New(venta As Venta, cliente As String)
+    Public Sub New(ventaSeleccionada As Venta, cliente As String)
         InitializeComponent()
-        Me.venta = venta
+        Me.venta = ventaSeleccionada
         Me.cliente = cliente
     End Sub
 
-    Private Sub FormModificarVenta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub FormEditarVenta_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         CargarClientes()
         CargarDatosVenta()
         CargarProductosVenta()
         CargarProductosDisponibles()
-    End Sub
-
-    Private Sub CargarClientes()
-        Dim clientes As List(Of Cliente) = ClienteBLL.ObtenerClientes()
-        ComboBoxClientes.DataSource = clientes
-        ComboBoxClientes.DisplayMember = "Cliente"
-        ComboBoxClientes.ValueMember = "ID"
-        ComboBoxClientes.SelectedValue = venta.IDCliente
-    End Sub
-
-    Private Sub CargarDatosVenta()
-        Dim datosVenta As New List(Of Venta) From {venta}
-        DataGridViewVenta.DataSource = datosVenta
-        If Not DataGridViewVenta.Columns.Contains("Cliente") Then
-            DataGridViewVenta.Columns.Add("Cliente", "Cliente")
-        End If
-
-        If DataGridViewVenta.Columns.Contains("IDCliente") Then
-            DataGridViewVenta.Columns("IDCliente").Visible = False
-        End If
-
-        If cliente IsNot Nothing Then
-            If DataGridViewVenta.Rows.Count > 0 Then
-                DataGridViewVenta.Rows(0).Cells("Cliente").Value = cliente
-            End If
-        End If
     End Sub
 
     Private Sub CargarProductosDisponibles()
@@ -52,16 +28,38 @@ Public Class FormEditarVenta
         cbProductos.ValueMember = "ID"
     End Sub
 
+    Private Sub CargarClientes()
+        Dim clientes As List(Of Cliente) = ClienteBLL.ObtenerClientes()
+        ComboBoxClientes.DataSource = clientes
+        ComboBoxClientes.DisplayMember = "Nombre"
+        ComboBoxClientes.ValueMember = "ID"
+        ComboBoxClientes.SelectedValue = venta.IDCliente
+    End Sub
+
+    Private Sub CargarDatosVenta()
+        Dim datosVenta As New List(Of Venta) From {venta}
+        DataGridViewVenta.DataSource = datosVenta
+
+        If Not DataGridViewVenta.Columns.Contains("Cliente") Then
+            DataGridViewVenta.Columns.Add("Cliente", "Cliente")
+        End If
+
+        If DataGridViewVenta.Columns.Contains("IDCliente") Then
+            DataGridViewVenta.Columns("IDCliente").Visible = False
+        End If
+
+        If cliente IsNot Nothing AndAlso DataGridViewVenta.Rows.Count > 0 Then
+            DataGridViewVenta.Rows(0).Cells("Cliente").Value = cliente
+        End If
+    End Sub
 
     Private Sub CargarProductosVenta()
         Dim resultado = VentaBLL.ObtenerDetallesConNombresDeProductos(venta.ID)
         detalles = resultado.Item1
         Dim nombresProductos As List(Of String) = resultado.Item2
 
-        ' Limpiar las filas anteriores
         DataGridViewProductos.Rows.Clear()
 
-        ' Asegúrate de que las columnas estén presentes
         If Not DataGridViewProductos.Columns.Contains("IDProducto") Then
             DataGridViewProductos.Columns.Add("IDProducto", "IDProducto")
         End If
@@ -78,125 +76,104 @@ Public Class FormEditarVenta
             DataGridViewProductos.Columns.Add("Nombre", "Nombre")
         End If
 
-        ' Cargar los productos y los nombres
         For i As Integer = 0 To detalles.Count - 1
-            ' Añadir la fila con los detalles de la venta
             DataGridViewProductos.Rows.Add(detalles(i).IDProducto, detalles(i).Cantidad, detalles(i).PrecioUnitario, detalles(i).PrecioTotal)
-            ' Establecer el valor del nombre del producto en la nueva columna "Nombre"
             DataGridViewProductos.Rows(i).Cells("Nombre").Value = nombresProductos(i)
         Next
 
-        ' Ocultar columnas innecesarias
         DataGridViewProductos.Columns("IDProducto").Visible = False
         DataGridViewProductos.Columns("PrecioUnitario").Visible = True
         DataGridViewProductos.Columns("PrecioTotal").Visible = True
-
     End Sub
+    Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnSumar.Click
+        Dim productoId As Integer = Convert.ToInt32(cbProductos.SelectedValue)
+        Dim cantidad As Integer = Convert.ToInt32(numCantidad.Value)
 
-    Private Sub cbProductos_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbProductos.SelectedIndexChanged
-        ' Si se selecciona un producto, actualizamos la cantidad inicial
-        If cbProductos.SelectedIndex >= 0 Then
-            Dim producto As Producto = CType(cbProductos.SelectedItem, Producto)
-            ' Configura el NumericUpDown a la cantidad correspondiente
-            numCantidad.Value = 1 ' O la cantidad actual si ya tiene uno
-        End If
-    End Sub
+        If cantidad > 0 Then
+            Dim producto = ProductoBLL.ObtenerProductoPorID(productoId)
+            Dim productoExistente As Boolean = False
 
-    Private Sub NumericUpDownCantidad_ValueChanged(sender As Object, e As EventArgs) Handles numCantidad.ValueChanged
-        ' Aquí se puede validar y actualizar la cantidad según lo que se haya seleccionado
-    End Sub
-    ' Formulario de la UI
-    Private Sub btnSumar_Click(sender As Object, e As EventArgs) Handles btnSumar.Click
-        If cbProductos.SelectedIndex >= 0 Then
-            Dim idProducto As Integer = Convert.ToInt32(cbProductos.SelectedValue)
-            Dim cantidad As Integer = Convert.ToInt32(numCantidad.Value)
-            Dim idVenta As Integer = venta.ID ' Asumiendo que tienes el ID de la venta
+            For Each row As DataGridViewRow In DataGridViewProductos.Rows
+                If row.Cells("IDProducto").Value IsNot Nothing AndAlso row.Cells("IDProducto").Value = productoId Then
 
-            ' Verificamos si el producto ya está en la venta usando la capa BLL
-            If VentaBLL.ProductoEnVenta(idVenta, idProducto) Then
-                ' Si el producto ya está en la venta, agregamos la cantidad al item existente
-                VentaBLL.ActualizarCantidadProducto(idVenta, idProducto, cantidad)
-                MessageBox.Show("Cantidad actualizada en la venta.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Else
-                ' Si el producto no está en la venta, lo agregamos con la cantidad seleccionada
-                Dim producto As Producto = CType(cbProductos.SelectedItem, Producto)
-                Dim precioUnitario As Double = producto.Precio ' Suponiendo que tienes el precio del producto
-                Dim precioTotal As Double = precioUnitario * cantidad
-
-                ' Agregar el nuevo producto a la venta
-                VentaBLL.AgregarProductoAVenta(idVenta, idProducto, precioUnitario, cantidad, precioTotal)
-                MessageBox.Show("Producto agregado a la venta.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    Dim cantidadExistente As Integer = Convert.ToInt32(row.Cells("Cantidad").Value)
+                    row.Cells("Cantidad").Value = cantidadExistente + cantidad
+                    row.Cells("PrecioTotal").Value = row.Cells("PrecioUnitario").Value * (cantidadExistente + cantidad)
+                    productoExistente = True
+                    Exit For
+                End If
+            Next
+            If Not productoExistente Then
+                DataGridViewProductos.Rows.Add(productoId, cantidad, producto.Precio, producto.Precio * cantidad, producto.Nombre)
             End If
-
-            ' Actualizamos la vista de productos
-            CargarProductosVenta()
         Else
-            MessageBox.Show("Por favor, seleccione un producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("La cantidad debe ser mayor a cero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
-    Private Sub btnRestar_Click(sender As Object, e As EventArgs) Handles btnRestar.Click
-        If cbProductos.SelectedIndex >= 0 Then
-            Dim idProducto As Integer = Convert.ToInt32(cbProductos.SelectedValue)
+    Private Sub btnEliminarProducto_Click(sender As Object, e As EventArgs) Handles btnRestar.Click
+        If cbProductos.SelectedValue IsNot Nothing Then
+            Dim productoId As Integer = Convert.ToInt32(cbProductos.SelectedValue)
             Dim cantidad As Integer = Convert.ToInt32(numCantidad.Value)
-            Dim idVenta As Integer = venta.ID ' Asumiendo que tienes el ID de la venta
 
-            ' Verificamos si el producto está en la venta
-            If VentaBLL.ProductoEnVenta(idVenta, idProducto) Then
-                ' Si el producto está en la venta, verificamos si la cantidad a restar es mayor a 0
-                If cantidad > 0 Then
-                    ' Llamamos a la función BLL para restar la cantidad del producto
-                    VentaBLL.RestarCantidadProductoEnVenta(idVenta, idProducto, cantidad)
+            If cantidad > 0 Then
+                Dim productoExistente As Boolean = False
+                For Each row As DataGridViewRow In DataGridViewProductos.Rows
+                    If row.Cells("IDProducto").Value IsNot Nothing AndAlso row.Cells("IDProducto").Value = productoId Then
+                        Dim cantidadExistente As Integer = Convert.ToInt32(row.Cells("Cantidad").Value)
 
-                    ' Verificamos si el producto sigue en la venta después de restar
-                    If VentaBLL.ProductoEnVenta(idVenta, idProducto) Then
-                        ' Si el producto sigue en la venta, simplemente mostramos un mensaje
-                        MessageBox.Show("Cantidad reducida en la venta.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    Else
-                        ' Si el producto se eliminó completamente, mostramos otro mensaje
-                        MessageBox.Show("Producto eliminado de la venta.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        If cantidadExistente >= cantidad Then
+                            Dim nuevaCantidad As Integer = cantidadExistente - cantidad
+                            row.Cells("Cantidad").Value = nuevaCantidad
+                            row.Cells("PrecioTotal").Value = row.Cells("PrecioUnitario").Value * nuevaCantidad
+                        End If
+
+                        If Convert.ToInt32(row.Cells("Cantidad").Value) <= 0 Then
+                            DataGridViewProductos.Rows.Remove(row)
+                        End If
+
+                        productoExistente = True
+                        Exit For
                     End If
-                Else
-                    MessageBox.Show("La cantidad a restar debe ser mayor a 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Next
+                If Not productoExistente Then
+                    MessageBox.Show("El producto seleccionado no está en la lista.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
             Else
-                MessageBox.Show("Este producto no está en la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("La cantidad debe ser mayor que cero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
-
-            ' Actualizamos la vista de productos
-            CargarProductosVenta()
         Else
-            MessageBox.Show("Por favor, seleccione un producto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Por favor, seleccione un producto para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
-
-
-
     Private Sub btnGuardar_Click(sender As Object, e As EventArgs) Handles btnGuardar.Click
-        venta.IDCliente = ComboBoxClientes.SelectedValue
+        Try
+            venta.IDCliente = ComboBoxClientes.SelectedValue
 
-        Dim detalles As New List(Of VentaItem)
-        For Each row As DataGridViewRow In DataGridViewProductos.Rows
-            If Not row.IsNewRow Then
-                Dim precioUnitario As Double = row.Cells("PrecioUnitario").Value
-                Dim cantidad As Double = row.Cells("Cantidad").Value
-                Dim precioTotal As Double = precioUnitario * cantidad
+            detalles.Clear()
+            For Each row As DataGridViewRow In DataGridViewProductos.Rows
+                If row.Cells("IDProducto").Value IsNot Nothing Then
+                    detalles.Add(New VentaItem(0, venta.ID, row.Cells("IDProducto").Value, row.Cells("PrecioUnitario").Value, row.Cells("Cantidad").Value, row.Cells("PrecioTotal").Value))
+                End If
+            Next
 
-                Dim ventaItem As New VentaItem(0, venta.ID, row.Cells("IDProducto").Value, precioUnitario, cantidad, precioTotal)
-                detalles.Add(ventaItem)
-            End If
-        Next
-        VentaBLL.ModificarVenta(venta, detalles)
+            VentaBLL.ModificarVenta(venta, detalles, "modificar")
 
-        Me.DialogResult = DialogResult.OK
-        RaiseEvent DatosActualizados(Me, EventArgs.Empty)
+            MessageBox.Show("Venta modificada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            RaiseEvent DatosActualizados(Me, EventArgs.Empty)
+            Me.DialogResult = DialogResult.OK
+            Me.Close()
+        Catch ex As Exception
+            MessageBox.Show("Error al modificar la venta: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+    Private Sub btnCancelar_Click(sender As Object, e As EventArgs) Handles btnCancelar.Click
+        Try
+            Dim mensaje As String = VentaBLL.RollbackTransaccion()
+            MessageBox.Show(mensaje, "Resultado de la operación", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show("Error al intentar realizar el rollback: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+        Me.DialogResult = DialogResult.Cancel
         Me.Close()
     End Sub
-
-    Public Event DatosActualizados As EventHandler
-
-    Private Sub btnVolver_Click(sender As Object, e As EventArgs) Handles btnVolver.Click
-        RaiseEvent DatosActualizados(Me, EventArgs.Empty)
-        Me.Close()
-    End Sub
-
 End Class

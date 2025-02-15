@@ -22,6 +22,28 @@ Public Class ProductoDAL
         End Try
         Return productos
     End Function
+    Public Shared Function BuscarProductosPorNombre(nombre As String) As List(Of Producto)
+        Dim productos As New List(Of Producto)
+        Using conn As SqlConnection = ConexionBD.ObtenerConexion()
+            conn.Open()
+            Dim query As String = "SELECT * FROM productos WHERE Nombre LIKE @nombre"
+            Using cmd As New SqlCommand(query, conn)
+                cmd.Parameters.AddWithValue("@nombre", "%" & nombre & "%")
+
+                Using reader As SqlDataReader = cmd.ExecuteReader()
+                    While reader.Read()
+                        Dim producto As New Producto()
+                        producto.ID = reader.GetInt32(reader.GetOrdinal("ID"))
+                        producto.Nombre = reader.GetString(reader.GetOrdinal("Nombre"))
+                        producto.Precio = reader.GetDouble(reader.GetOrdinal("Precio"))
+                        producto.Categoria = reader.GetString(reader.GetOrdinal("Categoria"))
+                        productos.Add(producto)
+                    End While
+                End Using
+            End Using
+        End Using
+        Return productos
+    End Function
     Public Shared Function ObtenerProductoPorID(ID As Integer) As Producto
         Dim producto As Producto = Nothing
         Using conn As SqlConnection = ConexionBD.ObtenerConexion()

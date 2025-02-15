@@ -13,18 +13,30 @@ Public Class FormVenta
         Dim ventas As List(Of Venta) = resultado.Item1
         Dim nombresClientes As List(Of String) = resultado.Item2
 
+        If chkOrdenMasCercano.Checked Then
+            ventas = VentaBLL.ObtenerVentasPorOrden("ascendente")
+        ElseIf chkOrdenMasViejo.Checked Then
+            ventas = VentaBLL.ObtenerVentasPorOrden("descendente")
+        Else
+            ' Si ninguno está marcado, cargar las ventas sin orden
+            ventas = VentaBLL.ObtenerVentasPorOrden("descendente")
+        End If
+
         If Not VentaDataView.Columns.Contains("NombreCliente") Then
             VentaDataView.Columns.Add("NombreCliente", "Cliente")
         End If
 
         VentaDataView.DataSource = ventas
-
         If VentaDataView.Columns("IDCliente") IsNot Nothing Then
             VentaDataView.Columns.Remove("IDCliente")
         End If
 
         For i As Integer = 0 To ventas.Count - 1
-            VentaDataView.Rows(i).Cells("NombreCliente").Value = nombresClientes(i)
+            If i < nombresClientes.Count Then
+                VentaDataView.Rows(i).Cells("NombreCliente").Value = nombresClientes(i)
+            Else
+                VentaDataView.Rows(i).Cells("NombreCliente").Value = "Desconocido"
+            End If
         Next
     End Sub
 
@@ -143,20 +155,34 @@ Public Class FormVenta
     End Sub
     Private Sub btnModificarVenta_Click(sender As Object, e As EventArgs) Handles btnModificarVenta.Click
         If VentaDataView.SelectedRows.Count > 0 Then
+            ' Obtener ID de la venta seleccionada
             Dim ventaID As Integer = Convert.ToInt32(VentaDataView.SelectedRows(0).Cells("ID").Value)
-            Dim resultado = VentaBLL.ObtenerVentaPorID(ventaID)
-            Dim venta As Venta = resultado.Item1
-            Dim cliente As String = resultado.Item2
 
-            Dim formModificarVenta As New FormEditarVenta(venta, cliente)
-            AddHandler formModificarVenta.DatosActualizados, AddressOf ActualizarDatos 'Subcribirse al evento DatosActualizados
-            If formModificarVenta.ShowDialog() = DialogResult.OK Then
-                CargarVentas()
+            ' Obtener la venta desde la capa BLL
+            Dim resultado = VentaBLL.ObtenerVentaPorID(ventaID)
+
+            ' Verificar si la venta es válida
+            If resultado.Item1 IsNot Nothing Then
+                Dim venta As Venta = resultado.Item1
+                Dim cliente As String = resultado.Item2
+                ' Crear el formulario de modificación de venta
+                Dim formModificarVenta As New FormEditarVenta(venta, cliente)
+
+                ' Suscribirse al evento DatosActualizados
+                AddHandler formModificarVenta.DatosActualizados, AddressOf ActualizarDatos
+
+                ' Mostrar el formulario y recargar si se modificó algo
+                If formModificarVenta.ShowDialog() = DialogResult.OK Then
+                    CargarVentas()
+                End If
+            Else
+                MessageBox.Show("No se pudo obtener la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
         Else
             MessageBox.Show("Por favor, seleccione una venta para modificar.")
         End If
     End Sub
+
     Private Sub btnEliminarVenta_Click(sender As Object, e As EventArgs) Handles btnEliminarVenta.Click
         If VentaDataView.SelectedRows.Count > 0 Then
             Dim ventaID As Integer = Convert.ToInt32(VentaDataView.SelectedRows(0).Cells("ID").Value)
@@ -179,4 +205,17 @@ Public Class FormVenta
         End If
     End Sub
 
+    Private Sub chkOrdenMasCercano_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenMasCercano.CheckedChanged
+        If chkOrdenMasCercano.Checked Then
+            chkOrdenMasViejo.Checked = False ' Desmarcar el otro CheckBox
+        End If
+        CargarVentas()
+    End Sub
+
+    Private Sub chkOrdenMasViejo_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenMasViejo.CheckedChanged
+        If chkOrdenMasViejo.Checked Then
+            chkOrdenMasCercano.Checked = False ' Desmarcar el otro CheckBox
+        End If
+        CargarVentas()
+    End Sub
 End Class
