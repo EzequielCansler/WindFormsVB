@@ -31,7 +31,7 @@ Public Class FormEditarVenta
     Private Sub CargarClientes()
         Dim clientes As List(Of Cliente) = ClienteBLL.ObtenerClientes()
         ComboBoxClientes.DataSource = clientes
-        ComboBoxClientes.DisplayMember = "Nombre"
+        ComboBoxClientes.DisplayMember = "Cliente"
         ComboBoxClientes.ValueMember = "ID"
         ComboBoxClientes.SelectedValue = venta.IDCliente
     End Sub
@@ -50,6 +50,10 @@ Public Class FormEditarVenta
 
         If cliente IsNot Nothing AndAlso DataGridViewVenta.Rows.Count > 0 Then
             DataGridViewVenta.Rows(0).Cells("Cliente").Value = cliente
+        End If
+        If DataGridViewVenta.Columns.Contains("Total") Then
+            DataGridViewVenta.Columns("Total").DefaultCellStyle.Format = "C2"
+            DataGridViewVenta.Columns("Total").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
         End If
     End Sub
 
@@ -84,6 +88,34 @@ Public Class FormEditarVenta
         DataGridViewProductos.Columns("IDProducto").Visible = False
         DataGridViewProductos.Columns("PrecioUnitario").Visible = True
         DataGridViewProductos.Columns("PrecioTotal").Visible = True
+        If DataGridViewProductos.Columns.Contains("PrecioUnitario") Then
+            DataGridViewProductos.Columns("PrecioUnitario").DefaultCellStyle.Format = "C2"
+            DataGridViewProductos.Columns("PrecioUnitario").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
+
+            For i As Integer = 0 To detalles.Count - 1
+                Dim precioUnitario As Object = DataGridViewProductos.Rows(i).Cells("PrecioUnitario").Value
+                If precioUnitario IsNot Nothing AndAlso Not IsDBNull(precioUnitario) Then
+                    If IsNumeric(precioUnitario) Then
+                        DataGridViewProductos.Rows(i).Cells("PrecioUnitario").Value = Convert.ToDouble(precioUnitario)
+                    End If
+                End If
+            Next
+        End If
+
+        If DataGridViewProductos.Columns.Contains("PrecioTotal") Then
+            DataGridViewProductos.Columns("PrecioTotal").DefaultCellStyle.Format = "C2"
+            DataGridViewProductos.Columns("PrecioTotal").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
+
+            For i As Integer = 0 To detalles.Count - 1
+                Dim precioTotal As Object = DataGridViewProductos.Rows(i).Cells("PrecioTotal").Value
+                If precioTotal IsNot Nothing AndAlso Not IsDBNull(precioTotal) Then
+                    If IsNumeric(precioTotal) Then
+                        DataGridViewProductos.Rows(i).Cells("PrecioTotal").Value = Convert.ToDouble(precioTotal)
+                    End If
+                End If
+            Next
+        End If
+
     End Sub
     Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs) Handles btnSumar.Click
         Dim productoId As Integer = Convert.ToInt32(cbProductos.SelectedValue)

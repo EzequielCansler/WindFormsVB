@@ -135,4 +135,14 @@ Public Class VentaBLL
             Throw New Exception("Error al realizar el rollback: " & ex.Message)
         End Try
     End Function
+    Public Shared Function CalcularTotalProductos(ventaID As Integer) As Double
+        Dim items = VentaDAL.ObtenerDetallesDeVenta(ventaID)
+        Dim total As Decimal = 0
+
+        For Each item In items.Item1
+            total += item.PrecioTotal
+        Next
+
+        Return total
+    End Function
 End Class

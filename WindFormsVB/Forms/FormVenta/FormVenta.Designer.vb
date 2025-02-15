@@ -32,8 +32,9 @@ Partial Class FormVenta
         Me.VentaItemDataView = New System.Windows.Forms.DataGridView()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.chkOrdenMasCercano = New System.Windows.Forms.CheckBox()
-        Me.chkOrdenMasViejo = New System.Windows.Forms.CheckBox()
+        Me.chkOrdenAscendente = New System.Windows.Forms.CheckBox()
+        Me.chkOrdenDescendente = New System.Windows.Forms.CheckBox()
+        Me.txtTotal = New System.Windows.Forms.TextBox()
         CType(Me.VentaDataView, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.VentaItemDataView, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -130,33 +131,41 @@ Partial Class FormVenta
         Me.Label3.TabIndex = 20
         Me.Label3.Text = "Lista de productos de la venta selecionada"
         '
-        'chkOrdenMasCercano
+        'chkOrdenAscendente
         '
-        Me.chkOrdenMasCercano.AutoSize = True
-        Me.chkOrdenMasCercano.Location = New System.Drawing.Point(78, 367)
-        Me.chkOrdenMasCercano.Name = "chkOrdenMasCercano"
-        Me.chkOrdenMasCercano.Size = New System.Drawing.Size(63, 17)
-        Me.chkOrdenMasCercano.TabIndex = 21
-        Me.chkOrdenMasCercano.Text = "Nuevos"
-        Me.chkOrdenMasCercano.UseVisualStyleBackColor = True
+        Me.chkOrdenAscendente.AutoSize = True
+        Me.chkOrdenAscendente.Location = New System.Drawing.Point(147, 367)
+        Me.chkOrdenAscendente.Name = "chkOrdenAscendente"
+        Me.chkOrdenAscendente.Size = New System.Drawing.Size(67, 17)
+        Me.chkOrdenAscendente.TabIndex = 21
+        Me.chkOrdenAscendente.Text = "Antiguas"
+        Me.chkOrdenAscendente.UseVisualStyleBackColor = True
         '
-        'chkOrdenMasViejo
+        'chkOrdenDescendente
         '
-        Me.chkOrdenMasViejo.AutoSize = True
-        Me.chkOrdenMasViejo.Location = New System.Drawing.Point(147, 367)
-        Me.chkOrdenMasViejo.Name = "chkOrdenMasViejo"
-        Me.chkOrdenMasViejo.Size = New System.Drawing.Size(67, 17)
-        Me.chkOrdenMasViejo.TabIndex = 22
-        Me.chkOrdenMasViejo.Text = "Antiguos"
-        Me.chkOrdenMasViejo.UseVisualStyleBackColor = True
+        Me.chkOrdenDescendente.AutoSize = True
+        Me.chkOrdenDescendente.Location = New System.Drawing.Point(78, 367)
+        Me.chkOrdenDescendente.Name = "chkOrdenDescendente"
+        Me.chkOrdenDescendente.Size = New System.Drawing.Size(63, 17)
+        Me.chkOrdenDescendente.TabIndex = 22
+        Me.chkOrdenDescendente.Text = "Nuevas"
+        Me.chkOrdenDescendente.UseVisualStyleBackColor = True
+        '
+        'txtTotal
+        '
+        Me.txtTotal.Location = New System.Drawing.Point(773, 367)
+        Me.txtTotal.Name = "txtTotal"
+        Me.txtTotal.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotal.TabIndex = 23
         '
         'FormVenta
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(907, 520)
-        Me.Controls.Add(Me.chkOrdenMasViejo)
-        Me.Controls.Add(Me.chkOrdenMasCercano)
+        Me.Controls.Add(Me.txtTotal)
+        Me.Controls.Add(Me.chkOrdenDescendente)
+        Me.Controls.Add(Me.chkOrdenAscendente)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.VentaItemDataView)
@@ -186,6 +195,7 @@ Partial Class FormVenta
     Friend WithEvents VentaItemDataView As DataGridView
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents chkOrdenMasCercano As CheckBox
-    Friend WithEvents chkOrdenMasViejo As CheckBox
+    Friend WithEvents chkOrdenAscendente As CheckBox
+    Friend WithEvents chkOrdenDescendente As CheckBox
+    Friend WithEvents txtTotal As TextBox
 End Class

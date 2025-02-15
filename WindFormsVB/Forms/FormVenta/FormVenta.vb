@@ -11,14 +11,13 @@ Public Class FormVenta
     Private Sub CargarVentas()
         Dim resultado = VentaBLL.ObtenerVentas()
         Dim ventas As List(Of Venta) = resultado.Item1
-        Dim nombresClientes As List(Of String) = resultado.Item2
+        Dim clientes As List(Of Cliente) = ClienteBLL.ObtenerClientes()
 
-        If chkOrdenMasCercano.Checked Then
+        If chkOrdenAscendente.Checked Then
             ventas = VentaBLL.ObtenerVentasPorOrden("ascendente")
-        ElseIf chkOrdenMasViejo.Checked Then
+        ElseIf chkOrdenDescendente.Checked Then
             ventas = VentaBLL.ObtenerVentasPorOrden("descendente")
         Else
-            ' Si ninguno está marcado, cargar las ventas sin orden
             ventas = VentaBLL.ObtenerVentasPorOrden("descendente")
         End If
 
@@ -27,18 +26,37 @@ Public Class FormVenta
         End If
 
         VentaDataView.DataSource = ventas
+
         If VentaDataView.Columns("IDCliente") IsNot Nothing Then
             VentaDataView.Columns.Remove("IDCliente")
         End If
 
+        If VentaDataView.Columns.Contains("Total") Then
+            VentaDataView.Columns("Total").DefaultCellStyle.Format = "C2"
+            VentaDataView.Columns("Total").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
+
+            For i As Integer = 0 To VentaDataView.Rows.Count - 1
+                Dim total As Object = VentaDataView.Rows(i).Cells("Total").Value
+                If total IsNot Nothing AndAlso Not IsDBNull(total) Then
+                    If IsNumeric(total) Then
+                        VentaDataView.Rows(i).Cells("Total").Value = Convert.ToDouble(total)
+                    End If
+                End If
+            Next
+        End If
+
         For i As Integer = 0 To ventas.Count - 1
-            If i < nombresClientes.Count Then
-                VentaDataView.Rows(i).Cells("NombreCliente").Value = nombresClientes(i)
+            Dim venta As Venta = ventas(i)
+            Dim cliente As Cliente = clientes.FirstOrDefault(Function(c) c.ID = venta.IDCliente)
+
+            If cliente IsNot Nothing Then
+                VentaDataView.Rows(i).Cells("NombreCliente").Value = cliente.Cliente
             Else
                 VentaDataView.Rows(i).Cells("NombreCliente").Value = "Desconocido"
             End If
         Next
     End Sub
+
 
     Private Sub dgvVentas_SelectionChanged(sender As Object, e As EventArgs) Handles VentaDataView.SelectionChanged
         If VentaDataView.SelectedRows.Count > 0 Then
@@ -66,6 +84,39 @@ Public Class FormVenta
         For i As Integer = 0 To detalles.Count - 1
             VentaItemDataView.Rows(i).Cells("Nombre").Value = nombresProductos(i)
         Next
+
+        If VentaItemDataView.Columns.Contains("PrecioUnitario") Then
+            VentaItemDataView.Columns("PrecioUnitario").DefaultCellStyle.Format = "C2"
+            VentaItemDataView.Columns("PrecioUnitario").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
+
+            For i As Integer = 0 To detalles.Count - 1
+                Dim precioUnitario As Object = VentaItemDataView.Rows(i).Cells("PrecioUnitario").Value
+                If precioUnitario IsNot Nothing AndAlso Not IsDBNull(precioUnitario) Then
+                    If IsNumeric(precioUnitario) Then
+                        VentaItemDataView.Rows(i).Cells("PrecioUnitario").Value = Convert.ToDouble(precioUnitario)
+                    End If
+                End If
+            Next
+        End If
+
+        If VentaItemDataView.Columns.Contains("PrecioTotal") Then
+
+            VentaItemDataView.Columns("PrecioTotal").DefaultCellStyle.Format = "C2"
+            VentaItemDataView.Columns("PrecioTotal").DefaultCellStyle.FormatProvider = New Globalization.CultureInfo("es-AR")
+
+            For i As Integer = 0 To detalles.Count - 1
+                Dim precioTotal As Object = VentaItemDataView.Rows(i).Cells("PrecioTotal").Value
+                If precioTotal IsNot Nothing AndAlso Not IsDBNull(precioTotal) Then
+
+                    If IsNumeric(precioTotal) Then
+                        VentaItemDataView.Rows(i).Cells("PrecioTotal").Value = Convert.ToDouble(precioTotal)
+                    End If
+                End If
+            Next
+        End If
+
+
+        CalcularTotalProductos(ventaID)
     End Sub
 
 
@@ -155,23 +206,18 @@ Public Class FormVenta
     End Sub
     Private Sub btnModificarVenta_Click(sender As Object, e As EventArgs) Handles btnModificarVenta.Click
         If VentaDataView.SelectedRows.Count > 0 Then
-            ' Obtener ID de la venta seleccionada
+
             Dim ventaID As Integer = Convert.ToInt32(VentaDataView.SelectedRows(0).Cells("ID").Value)
 
-            ' Obtener la venta desde la capa BLL
             Dim resultado = VentaBLL.ObtenerVentaPorID(ventaID)
 
-            ' Verificar si la venta es válida
             If resultado.Item1 IsNot Nothing Then
                 Dim venta As Venta = resultado.Item1
                 Dim cliente As String = resultado.Item2
-                ' Crear el formulario de modificación de venta
+
                 Dim formModificarVenta As New FormEditarVenta(venta, cliente)
 
-                ' Suscribirse al evento DatosActualizados
                 AddHandler formModificarVenta.DatosActualizados, AddressOf ActualizarDatos
-
-                ' Mostrar el formulario y recargar si se modificó algo
                 If formModificarVenta.ShowDialog() = DialogResult.OK Then
                     CargarVentas()
                 End If
@@ -205,17 +251,22 @@ Public Class FormVenta
         End If
     End Sub
 
-    Private Sub chkOrdenMasCercano_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenMasCercano.CheckedChanged
-        If chkOrdenMasCercano.Checked Then
-            chkOrdenMasViejo.Checked = False ' Desmarcar el otro CheckBox
+    Private Sub chkOrdenMasCercano_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenAscendente.CheckedChanged
+        If chkOrdenAscendente.Checked Then
+            chkOrdenDescendente.Checked = False
         End If
         CargarVentas()
     End Sub
 
-    Private Sub chkOrdenMasViejo_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenMasViejo.CheckedChanged
-        If chkOrdenMasViejo.Checked Then
-            chkOrdenMasCercano.Checked = False ' Desmarcar el otro CheckBox
+    Private Sub chkOrdenMasViejo_CheckedChanged(sender As Object, e As EventArgs) Handles chkOrdenDescendente.CheckedChanged
+        If chkOrdenDescendente.Checked Then
+            chkOrdenAscendente.Checked = False
         End If
         CargarVentas()
+    End Sub
+
+    Private Sub CalcularTotalProductos(ventaID As Integer)
+        Dim total As Decimal = VentaBLL.CalcularTotalProductos(ventaID)
+        txtTotal.Text = total.ToString("C2", New Globalization.CultureInfo("es-AR"))
     End Sub
 End Class
